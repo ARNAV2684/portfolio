@@ -2,6 +2,7 @@
 
 import { useEffect, useRef } from "react";
 import type { Project } from "@/data/content";
+import { assetPath } from "@/lib/assetPath";
 import { usePrefersReducedMotion } from "@/lib/useReducedMotion";
 import { useMouseGlow } from "@/lib/useMouseGlow";
 
@@ -118,7 +119,7 @@ function Media({ project }: { project: Project }) {
       <div className="relative z-[1] min-h-[200px] overflow-hidden md:min-h-full">
         {/* eslint-disable-next-line @next/next/no-img-element */}
         <img
-          src={media.src}
+          src={assetPath(media.src)}
           alt={media.alt}
           loading="lazy"
           className="absolute inset-0 h-full w-full object-cover object-top"
@@ -127,7 +128,7 @@ function Media({ project }: { project: Project }) {
     );
   }
 
-  return <VideoMedia project={project} src={media.src} poster={media.poster} />;
+  return <VideoMedia project={project} src={assetPath(media.src)} poster={assetPath(media.poster)} />;
 }
 
 function VideoMedia({

@@ -1,4 +1,5 @@
 import { DATA } from "@/data/content";
+import { assetPath } from "@/lib/assetPath";
 import { Reveal } from "./Reveal";
 import { HeroPanel } from "./HeroPanel";
 
@@ -36,7 +37,7 @@ export function Hero() {
           <Reveal delay={180}>
             <div className="mt-9 flex flex-wrap items-center gap-3">
               <a
-                href={links.resume}
+                href={assetPath(links.resume)}
                 download
                 className="inline-flex items-center gap-2 rounded-full bg-ink px-5 py-3 text-sm font-semibold text-bg transition-opacity hover:opacity-90"
               >
