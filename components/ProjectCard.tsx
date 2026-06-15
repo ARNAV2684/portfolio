@@ -113,6 +113,20 @@ function Media({ project }: { project: Project }) {
     );
   }
 
+  if (media.kind === "image") {
+    return (
+      <div className="relative z-[1] min-h-[200px] overflow-hidden md:min-h-full">
+        {/* eslint-disable-next-line @next/next/no-img-element */}
+        <img
+          src={media.src}
+          alt={media.alt}
+          loading="lazy"
+          className="absolute inset-0 h-full w-full object-cover object-top"
+        />
+      </div>
+    );
+  }
+
   return <VideoMedia project={project} src={media.src} poster={media.poster} />;
 }
 
