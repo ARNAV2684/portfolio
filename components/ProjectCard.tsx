@@ -84,18 +84,30 @@ function Media({ project }: { project: Project }) {
 
   if (media.kind === "live") {
     return (
-      <div className="live-tile relative z-[1] grid min-h-[200px] place-items-center p-6 md:min-h-full">
-        <div className="text-center">
-          <div className="font-display text-2xl font-extrabold text-white/90">
-            {project.title}
-          </div>
-          <div className="mt-1 font-mono-label text-white/55">
-            analytics-native football
-          </div>
-        </div>
-        <span className="absolute bottom-3 left-3 inline-flex items-center gap-2 rounded-full bg-black/35 px-2.5 py-1 font-mono-label text-white/90 backdrop-blur">
+      <div className="live-tile relative z-[1] min-h-[200px] overflow-hidden md:min-h-full">
+        {media.src && (
+          <iframe
+            src={media.src}
+            title={`${project.title} live preview`}
+            loading="lazy"
+            aria-hidden="true"
+            tabIndex={-1}
+            style={{
+              position: "absolute",
+              top: 0,
+              left: 0,
+              width: "calc(100% / 0.38)",
+              height: "calc(100% / 0.38)",
+              transform: "scale(0.38)",
+              transformOrigin: "top left",
+              pointerEvents: "none",
+              border: "none",
+            }}
+          />
+        )}
+        <span className="absolute bottom-3 left-3 z-10 inline-flex items-center gap-2 rounded-full bg-black/35 px-2.5 py-1 font-mono-label text-white/90 backdrop-blur">
           <span className="status-dot" aria-hidden />
-          live preview · flickstat.com
+          live · flickstat.com
         </span>
       </div>
     );
@@ -142,7 +154,7 @@ function VideoMedia({
         loop
         playsInline
         preload="none"
-        poster={poster}
+        poster={poster || undefined}
         aria-label={`${project.title} demo clip`}
       >
         <source src={src} type="video/mp4" />

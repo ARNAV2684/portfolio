@@ -114,10 +114,21 @@ export const DATA: PortfolioData = {
       type: "LIVE",
       action: "Visit flickstat.com ↗",
       href: "https://flickstat.com",
-      media: { kind: "live", src: "", poster: "" }, // live preview tile (no video)
+      media: { kind: "live", src: "https://flickstat.com", poster: "" },
       desc: "A free, analytics-native football platform — founded it and built the entire stack solo on a 3-person team: a Python data pipeline, a Supabase Postgres backend, and a Next.js frontend on Vercel, with a canonical entity-resolution layer unifying four providers and hybrid ISR/SSR serving 1,000+ pages.",
       tags: ["Next.js", "Supabase", "Python", "Vercel"],
       metric: { value: "~1,200", label: "visitors · month one" },
+    },
+    {
+      title: "SAM Auto-Annotation",
+      kind: "GarudaUAV · Computer Vision",
+      type: "PRIVATE",
+      action: "▶ demo clip",
+      href: "",
+      media: { kind: "video", src: "/clips/sam-demo.mp4", poster: "" },
+      desc: "One-click image labeling on Meta's Segment Anything Model with multi-format export (YOLO / COCO / Pascal VOC), batch processing, and a Gradio UI — cutting manual annotation effort by up to 80%.",
+      tags: ["SAM", "Gradio", "Python"],
+      metric: { value: "↓80%", label: "labeling effort" },
     },
     {
       title: "End-to-End ML Data Pipeline",
@@ -129,17 +140,6 @@ export const DATA: PortfolioData = {
       desc: "A config-driven platform turning raw file/DB/API data into trained models — validation, cleaning, feature processing, augmentation, and evaluation — with versioned, reproducible runs. Containerized with Docker behind a React/TypeScript control UI.",
       tags: ["FastAPI", "Docker", "Python", "React"],
       metric: { value: "Dockerized", label: "reproducible runs" },
-    },
-    {
-      title: "SAM Auto-Annotation",
-      kind: "GarudaUAV · Computer Vision",
-      type: "PRIVATE",
-      action: "▶ demo clip",
-      href: "", // PRIVATE — no public repo; the clip is the proof.
-      media: { kind: "video", src: "/clips/sam-demo.mp4", poster: "/clips/sam-poster.jpg" },
-      desc: "One-click image labeling on Meta's Segment Anything Model with multi-format export (YOLO / COCO / Pascal VOC), batch processing, and a Gradio UI — cutting manual annotation effort by up to 80%.",
-      tags: ["SAM", "Gradio", "Python"],
-      metric: { value: "↓80%", label: "labeling effort" },
     },
   ],
   skills: [
