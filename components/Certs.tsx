@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import { DATA, type Cert } from "@/data/content";
+import { assetPath } from "@/lib/assetPath";
 import { Reveal } from "./Reveal";
 import { SectionHeading } from "./SectionHeading";
 
@@ -99,7 +100,7 @@ function BadgeOctagon({ cert }: { cert: Cert }) {
     <div className="relative h-20 w-20 shrink-0">
       {/* eslint-disable-next-line @next/next/no-img-element */}
       <img
-        src={cert.badgeImg}
+        src={assetPath(cert.badgeImg)}
         alt={`${cert.name} (${cert.sub}) badge`}
         className="h-full w-full object-contain"
         onError={() => setErrored(true)}
