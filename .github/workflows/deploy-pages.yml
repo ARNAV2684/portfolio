@@ -28,10 +28,11 @@ jobs:
       - name: Install dependencies
         run: npm ci
 
-      - name: Remove edge runtime for static export
-        # Edge runtime is needed on Vercel (Windows build workaround) but
-        # Linux CI can run @vercel/og via Node.js fine without it.
+      - name: Remove server-only routes for static export
+        # API routes and edge runtime are Vercel-only; strip them before the
+        # static export build so Next.js doesn't complain about force-dynamic.
         run: |
+          rm -rf app/api
           sed -i 's/export const runtime = "edge";//g' \
             app/icon.tsx app/apple-icon.tsx app/opengraph-image.tsx
 
