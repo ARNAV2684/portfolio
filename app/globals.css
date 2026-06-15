@@ -1,0 +1,386 @@
+/* Display/body font. next/font/google lacks "Hanken Grotesque" in this Next version,
+   so we load it via @import (explicitly allowed by CLAUDE.md §1). Geist Mono stays
+   self-hosted via the `geist` package (see app/layout.tsx). */
+@import url("https://fonts.googleapis.com/css2?family=Hanken+Grotesque:wght@400;500;600;700;800&display=swap");
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* ───────────────────────────────────────────────────────────────────────────
+   Design tokens (CLAUDE.md §2). Light is default; .dark is toggled by next-themes.
+   No component hardcodes hex — everything references these variables (mapped into
+   Tailwind colors in tailwind.config.ts).
+   ─────────────────────────────────────────────────────────────────────────── */
+:root {
+  --bg: #f6f5f1; /* warm paper */
+  --card: #ffffff;
+  --ink: #17161a; /* near-black text */
+  --mut: #76727e; /* muted text */
+  --line: #e7e5de; /* hairlines/borders */
+  --accent: #3b43f5; /* indigo — links, key numbers, emphasis (sparingly) */
+  --green: #16b364; /* live / now / verified / success */
+  --danger: #e5484d; /* form errors (not in §2 palette; added for accessible error text) */
+
+  /* Derived helpers */
+  --accent-soft: rgba(59, 67, 245, 0.08);
+  --accent-ring: rgba(59, 67, 245, 0.18);
+  --shadow-card: 0 1px 2px rgba(23, 22, 26, 0.04);
+  --shadow-hover: 0 18px 40px -24px rgba(23, 22, 26, 0.35);
+
+  /* Fonts (mapped into Tailwind in tailwind.config.ts) */
+  --font-hanken: "Hanken Grotesque", system-ui, sans-serif;
+  --font-display: var(--font-hanken), system-ui, sans-serif;
+  --font-body: var(--font-hanken), system-ui, sans-serif;
+  --font-mono-stack: var(--font-geist-mono), ui-monospace, SFMono-Regular, monospace;
+}
+
+.dark {
+  --bg: #0e0e10;
+  --card: #161618;
+  --ink: #eceae3;
+  --mut: #9a949f;
+  --line: #262629;
+  --accent: #3b43f5;
+  --green: #16b364;
+  --danger: #ff6166;
+
+  --accent-soft: rgba(59, 67, 245, 0.16);
+  --accent-ring: rgba(59, 67, 245, 0.32);
+  --shadow-card: 0 1px 2px rgba(0, 0, 0, 0.3);
+  --shadow-hover: 0 18px 40px -20px rgba(0, 0, 0, 0.6);
+}
+
+/* ─────────────────────────────────────────────────────────────────────────── */
+* {
+  border-color: var(--line);
+}
+
+html {
+  scroll-behavior: smooth;
+  -webkit-text-size-adjust: 100%;
+}
+
+body {
+  background-color: var(--bg);
+  color: var(--ink);
+  font-family: var(--font-body);
+  font-weight: 400;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  font-feature-settings: "ss01", "cv01";
+  transition: background-color 0.4s ease, color 0.4s ease;
+}
+
+::selection {
+  background: var(--accent);
+  color: #fff;
+}
+
+/* Headings use the display font with tight tracking (CLAUDE.md §2). */
+h1,
+h2,
+h3 {
+  font-family: var(--font-display);
+  font-weight: 800;
+  letter-spacing: -0.02em;
+  color: var(--ink);
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+/* Visible, accessible focus states in both themes (CLAUDE.md §10). */
+:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+  border-radius: 4px;
+}
+
+/* ───────────────────────────────────────────────────────────────────────────
+   Reusable utility classes
+   ─────────────────────────────────────────────────────────────────────────── */
+.font-mono-label {
+  font-family: var(--font-mono-stack);
+  font-size: 0.72rem;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+.shell {
+  width: 100%;
+  max-width: 1180px;
+  margin: 0 auto;
+  padding-left: 24px;
+  padding-right: 24px;
+}
+@media (min-width: 768px) {
+  .shell {
+    padding-left: 40px;
+    padding-right: 40px;
+  }
+}
+
+/* Scroll reveal: fade + 18px rise (CLAUDE.md §2 motion language). */
+.reveal {
+  opacity: 0;
+  transform: translateY(18px);
+  transition: opacity 0.7s cubic-bezier(0.2, 0.7, 0.2, 1),
+    transform 0.7s cubic-bezier(0.2, 0.7, 0.2, 1);
+  will-change: opacity, transform;
+}
+.reveal.is-visible {
+  opacity: 1;
+  transform: none;
+}
+
+/* Card hover: lift + soft shadow + border tint toward accent. */
+.card-hover {
+  transition: transform 0.3s cubic-bezier(0.2, 0.7, 0.2, 1),
+    box-shadow 0.3s ease, border-color 0.3s ease;
+}
+.card-hover:hover {
+  transform: translateY(-3px);
+  box-shadow: var(--shadow-hover);
+  border-color: var(--accent);
+}
+
+/* Pulsing "live"/"now" dot. */
+.status-dot {
+  position: relative;
+  display: inline-block;
+  width: 8px;
+  height: 8px;
+  border-radius: 9999px;
+  background: var(--green);
+}
+.status-dot::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: 9999px;
+  background: var(--green);
+  animation: pulse-ring 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+}
+@keyframes pulse-ring {
+  0% {
+    transform: scale(1);
+    opacity: 0.7;
+  }
+  100% {
+    transform: scale(2.6);
+    opacity: 0;
+  }
+}
+
+/* One-shot diagonal "shine" sweep on cert hover (CLAUDE.md §2 / §5). */
+.shine {
+  position: relative;
+  overflow: hidden;
+}
+.shine::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: -120%;
+  width: 60%;
+  height: 100%;
+  background: linear-gradient(
+    115deg,
+    transparent 0%,
+    rgba(255, 255, 255, 0.55) 50%,
+    transparent 100%
+  );
+  transform: skewX(-18deg);
+  transition: none;
+  pointer-events: none;
+}
+.shine:hover::before {
+  animation: shine-sweep 0.85s cubic-bezier(0.2, 0.7, 0.2, 1) forwards;
+}
+.dark .shine::before {
+  background: linear-gradient(
+    115deg,
+    transparent 0%,
+    rgba(255, 255, 255, 0.16) 50%,
+    transparent 100%
+  );
+}
+@keyframes shine-sweep {
+  to {
+    left: 130%;
+  }
+}
+
+/* Live-preview gradient tile for the Flickstat card (CLAUDE.md §7). */
+.live-tile {
+  background: radial-gradient(
+      120% 120% at 0% 0%,
+      rgba(59, 67, 245, 0.22),
+      transparent 55%
+    ),
+    radial-gradient(120% 120% at 100% 100%, rgba(22, 179, 100, 0.22), transparent 55%),
+    linear-gradient(135deg, #1c1c24, #0e0e10);
+}
+
+/* Media placeholder behind video clips so cards look intentional before assets land. */
+.media-fallback {
+  background: radial-gradient(
+      120% 120% at 20% 0%,
+      rgba(59, 67, 245, 0.18),
+      transparent 60%
+    ),
+    linear-gradient(135deg, #17161a, #2a2730);
+}
+
+/* Cursor-tracking spotlight. JS sets --mx/--my from pointer position
+   (see lib/useMouseGlow.ts); the glow fades in on hover, behind content. */
+.glow {
+  position: relative;
+}
+.glow::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  border-radius: inherit;
+  opacity: 0;
+  transition: opacity 0.4s ease;
+  background: radial-gradient(
+    480px circle at var(--mx, 50%) var(--my, 50%),
+    var(--accent-soft),
+    transparent 62%
+  );
+  pointer-events: none;
+}
+.glow:hover::before {
+  opacity: 1;
+}
+
+/* Soft animated aurora behind the hero — fills the wide layout with motion. */
+.aurora {
+  position: absolute;
+  top: -200px;
+  left: 50%;
+  width: 1100px;
+  max-width: 130%;
+  height: 540px;
+  transform: translateX(-50%);
+  pointer-events: none;
+  filter: blur(72px);
+  opacity: 0.6;
+  background: radial-gradient(38% 60% at 24% 34%, rgba(59, 67, 245, 0.28), transparent 60%),
+    radial-gradient(42% 56% at 78% 24%, rgba(22, 179, 100, 0.2), transparent 62%);
+  animation: aurora-float 16s ease-in-out infinite alternate;
+}
+.dark .aurora {
+  opacity: 0.5;
+}
+@keyframes aurora-float {
+  from {
+    transform: translateX(-50%) translateY(0) scale(1);
+  }
+  to {
+    transform: translateX(-50%) translateY(26px) scale(1.06);
+  }
+}
+
+/* Hero status panel: a fill-on-load training bar + a blinking terminal caret. */
+.hero-bar {
+  width: 0;
+  animation: hero-fill 2.4s cubic-bezier(0.2, 0.7, 0.2, 1) 0.3s forwards;
+}
+@keyframes hero-fill {
+  to {
+    width: 80%;
+  }
+}
+.hero-caret {
+  animation: caret-blink 1.1s steps(1) infinite;
+}
+@keyframes caret-blink {
+  50% {
+    opacity: 0;
+  }
+}
+
+/* Skills marquee: full-bleed rows that scroll non-stop, pause on hover, and fade
+   at both edges. The track holds two identical sets of chips and shifts -50% so
+   the loop is seamless. Direction alternates per row via .reverse. */
+.marquee {
+  position: relative;
+  overflow: hidden;
+  -webkit-mask-image: linear-gradient(
+    90deg,
+    transparent,
+    #000 7%,
+    #000 93%,
+    transparent
+  );
+  mask-image: linear-gradient(90deg, transparent, #000 7%, #000 93%, transparent);
+}
+.marquee-track {
+  display: flex;
+  width: max-content;
+  gap: 0.625rem;
+  padding-right: 0.625rem; /* keeps the seam gap consistent between the two sets */
+  animation: marquee-left var(--marquee-duration, 34s) linear infinite;
+  will-change: transform;
+}
+.marquee-track.reverse {
+  animation-name: marquee-right;
+}
+.marquee:hover .marquee-track {
+  animation-play-state: paused;
+}
+@keyframes marquee-left {
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(-50%);
+  }
+}
+@keyframes marquee-right {
+  from {
+    transform: translateX(-50%);
+  }
+  to {
+    transform: translateX(0);
+  }
+}
+
+/* ───────────────────────────────────────────────────────────────────────────
+   Reduced motion (CLAUDE.md §2 / §10): no reveals, no looping animation.
+   Count-up + video autoplay are disabled in JS via matchMedia.
+   ─────────────────────────────────────────────────────────────────────────── */
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+  .reveal {
+    opacity: 1 !important;
+    transform: none !important;
+    transition: none !important;
+  }
+  .status-dot::after,
+  .shine:hover::before,
+  .aurora,
+  .hero-caret,
+  .marquee-track {
+    animation: none !important;
+  }
+  .hero-bar {
+    width: 80% !important;
+    animation: none !important;
+  }
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+  }
+}
