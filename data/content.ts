@@ -8,7 +8,8 @@ export type ProjectType = "LIVE" | "PRIVATE" | "OPEN SOURCE";
 
 export type ProjectMedia =
   | { kind: "live"; src?: string; poster?: string }
-  | { kind: "video"; src: string; poster: string };
+  | { kind: "video"; src: string; poster: string }
+  | { kind: "image"; src: string; alt: string };
 
 export interface Project {
   title: string;
@@ -136,7 +137,7 @@ export const DATA: PortfolioData = {
       type: "OPEN SOURCE",
       action: "View on GitHub ↗",
       href: "https://github.com/ARNAV2684/DataPro",
-      media: { kind: "video", src: "/clips/pipeline-demo.mp4", poster: "/clips/pipeline-poster.jpg" },
+      media: { kind: "image", src: "/clips/datapro-screenshot.png", alt: "DataLab Pro — data type selection UI" },
       desc: "A config-driven platform turning raw file/DB/API data into trained models — validation, cleaning, feature processing, augmentation, and evaluation — with versioned, reproducible runs. Containerized with Docker behind a React/TypeScript control UI.",
       tags: ["FastAPI", "Docker", "Python", "React"],
       metric: { value: "Dockerized", label: "reproducible runs" },
