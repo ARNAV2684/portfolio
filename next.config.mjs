@@ -1,10 +1,17 @@
 /** @type {import('next').NextConfig} */
+const isGithubPages = process.env.GITHUB_PAGES === "true";
+
 const nextConfig = {
   reactStrictMode: true,
   eslint: {
-    // We don't ship an ESLint config in this scaffold; type-checking still runs.
     ignoreDuringBuilds: true,
   },
+  // Static export for GitHub Pages; Vercel handles the full runtime build normally.
+  ...(isGithubPages && {
+    output: "export",
+    basePath: "/portfolio",
+    images: { unoptimized: true },
+  }),
 };
 
 export default nextConfig;
