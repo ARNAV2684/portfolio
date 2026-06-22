@@ -60,9 +60,17 @@ export function Nav() {
       <nav className="shell flex h-16 items-center justify-between">
         <a
           href="#main"
+          aria-label="Back to top"
           className="font-display text-lg font-extrabold tracking-tight text-ink"
         >
           arnav<span className="text-accent">.</span>
+          <span
+            className={`inline-block overflow-hidden align-baseline transition-all duration-500 ease-out ${
+              scrolled ? "ml-1 max-w-[8ch] opacity-100" : "max-w-0 opacity-0"
+            }`}
+          >
+            gupta
+          </span>
         </a>
 
         {/* Desktop links */}
