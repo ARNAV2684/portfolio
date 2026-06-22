@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import type { Project } from "@/data/content";
 import { assetPath } from "@/lib/assetPath";
 import { usePrefersReducedMotion } from "@/lib/useReducedMotion";
@@ -20,63 +20,141 @@ const TYPE_STYLES: Record<Project["type"], string> = {
  */
 export function ProjectCard({ project }: { project: Project }) {
   const onMove = useMouseGlow();
+  const [open, setOpen] = useState(false);
+  const panelId = `case-${project.title.replace(/\s+/g, "-").toLowerCase()}`;
+
   return (
     <article
       onMouseMove={onMove}
-      className="card-hover glow grid overflow-hidden rounded-card border border-line bg-card md:grid-cols-[300px_1fr]"
+      className="card-hover glow overflow-hidden rounded-card border border-line bg-card"
     >
-      <Media project={project} />
-      <div className="relative z-[1] flex flex-col p-6">
-        <div className="flex items-start justify-between gap-3">
-          <div className="font-mono-label text-mut">{project.kind}</div>
-          <span
-            className={`shrink-0 rounded-full border px-2.5 py-1 font-mono-label ${
-              TYPE_STYLES[project.type]
-            }`}
-          >
-            {project.type}
-          </span>
-        </div>
-
-        <h3 className="mt-2 text-2xl">{project.title}</h3>
-        <p className="mt-3 max-w-[52ch] leading-relaxed text-mut">{project.desc}</p>
-
-        {project.metric && (
-          <div className="mt-4 inline-flex items-baseline gap-2 self-start rounded-lg border border-line bg-bg px-3 py-2">
-            <span className="font-display text-xl font-extrabold tabular-nums text-accent">
-              {project.metric.value}
+      <div className="grid md:grid-cols-[300px_1fr]">
+        <Media project={project} />
+        <div className="relative z-[1] flex flex-col p-6">
+          <div className="flex items-start justify-between gap-3">
+            <div className="font-mono-label text-mut">{project.kind}</div>
+            <span
+              className={`shrink-0 rounded-full border px-2.5 py-1 font-mono-label ${
+                TYPE_STYLES[project.type]
+              }`}
+            >
+              {project.type}
             </span>
-            <span className="font-mono-label text-mut">{project.metric.label}</span>
           </div>
-        )}
 
-        <ul className="mt-4 flex flex-wrap gap-2">
-          {project.tags.map((t) => (
-            <li
-              key={t}
-              className="rounded-full border border-line px-2.5 py-1 font-mono-label text-mut"
-            >
-              {t}
-            </li>
-          ))}
-        </ul>
+          <h3 className="mt-2 text-2xl">{project.title}</h3>
+          <p className="mt-3 max-w-[52ch] leading-relaxed text-mut">{project.desc}</p>
 
-        <div className="mt-auto pt-5">
-          {project.href ? (
-            <a
-              href={project.href}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="font-mono-label text-accent transition-opacity hover:opacity-70"
-            >
-              {project.action}
-            </a>
-          ) : (
-            <span className="font-mono-label text-mut">{project.action}</span>
+          {project.metric && (
+            <div className="mt-4 inline-flex items-baseline gap-2 self-start rounded-lg border border-line bg-bg px-3 py-2">
+              <span className="font-display text-xl font-extrabold tabular-nums text-accent">
+                {project.metric.value}
+              </span>
+              <span className="font-mono-label text-mut">{project.metric.label}</span>
+            </div>
           )}
+
+          <ul className="mt-4 flex flex-wrap gap-2">
+            {project.tags.map((t) => (
+              <li
+                key={t}
+                className="rounded-full border border-line px-2.5 py-1 font-mono-label text-mut"
+              >
+                {t}
+              </li>
+            ))}
+          </ul>
+
+          <div className="mt-auto flex flex-wrap items-center justify-between gap-4 pt-5">
+            {project.href ? (
+              <a
+                href={project.href}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="font-mono-label text-accent transition-opacity hover:opacity-70"
+              >
+                {project.action}
+              </a>
+            ) : (
+              <span className="font-mono-label text-mut">{project.action}</span>
+            )}
+
+            {project.caseStudy && (
+              <button
+                type="button"
+                onClick={() => setOpen((v) => !v)}
+                aria-expanded={open}
+                aria-controls={panelId}
+                className="group inline-flex items-center gap-2 rounded-full border border-line bg-bg px-3 py-1.5 font-mono-label text-ink transition-colors hover:border-accent hover:text-accent"
+              >
+                <span>{open ? "Hide case study" : "Read case study"}</span>
+                <span
+                  aria-hidden
+                  className={`inline-block transition-transform ${open ? "rotate-180" : ""}`}
+                >
+                  ▾
+                </span>
+              </button>
+            )}
+          </div>
         </div>
       </div>
+
+      {project.caseStudy && (
+        <CaseStudyDrawer panelId={panelId} open={open} caseStudy={project.caseStudy} />
+      )}
     </article>
+  );
+}
+
+function CaseStudyDrawer({
+  panelId,
+  open,
+  caseStudy,
+}: {
+  panelId: string;
+  open: boolean;
+  caseStudy: NonNullable<Project["caseStudy"]>;
+}) {
+  return (
+    <div
+      id={panelId}
+      hidden={!open}
+      className={`relative z-[1] border-t border-line bg-bg/40 ${
+        open ? "case-study-enter" : ""
+      }`}
+    >
+      <div className="grid gap-6 p-6 md:grid-cols-2">
+        <Field label="The challenge" body={caseStudy.challenge} />
+        <Field label="My role" body={caseStudy.role} />
+        <div className="md:col-span-2">
+          <div className="font-mono-label text-mut">// process</div>
+          <ol className="mt-2 space-y-2">
+            {caseStudy.process.map((step, i) => (
+              <li key={i} className="flex gap-3 leading-relaxed text-ink">
+                <span className="mt-0.5 inline-block min-w-6 font-mono-label text-accent">
+                  {String(i + 1).padStart(2, "0")}
+                </span>
+                <span>{step}</span>
+              </li>
+            ))}
+          </ol>
+        </div>
+        <div className="md:col-span-2">
+          <div className="font-mono-label text-mut">// result</div>
+          <p className="mt-2 leading-relaxed text-ink">{caseStudy.result}</p>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+function Field({ label, body }: { label: string; body: string }) {
+  return (
+    <div>
+      <div className="font-mono-label text-mut">// {label}</div>
+      <p className="mt-2 leading-relaxed text-ink">{body}</p>
+    </div>
   );
 }
 
