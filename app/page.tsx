@@ -1,4 +1,6 @@
 import { Nav } from "@/components/Nav";
+import { ScrollProgress } from "@/components/ScrollProgress";
+import { BackToTop } from "@/components/BackToTop";
 import { Hero } from "@/components/Hero";
 import { StatsBand } from "@/components/StatsBand";
 import { Work } from "@/components/Work";
@@ -19,6 +21,7 @@ export default function Page() {
       >
         Skip to content
       </a>
+      <ScrollProgress />
       <Nav />
       <main id="main">
         <Hero />
@@ -31,6 +34,7 @@ export default function Page() {
         <Contact />
       </main>
       <Footer />
+      <BackToTop />
     </>
   );
 }
