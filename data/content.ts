@@ -11,6 +11,13 @@ export type ProjectMedia =
   | { kind: "video"; src: string; poster: string }
   | { kind: "image"; src: string; alt: string };
 
+export interface CaseStudy {
+  challenge: string;
+  role: string;
+  process: string[];
+  result: string;
+}
+
 export interface Project {
   title: string;
   kind: string;
@@ -25,6 +32,9 @@ export interface Project {
   /** Optional headline impact stat, surfaced as a chip on the card so the proof
    *  reads in a 5-second scan. Omit when there's no honest number to lead with. */
   metric?: { value: string; label: string };
+  /** Expandable case study — when present, the card shows a "read case study" toggle
+   *  that reveals an in-card drawer with the long-form story. */
+  caseStudy?: CaseStudy;
 }
 
 export interface Metric {
@@ -119,6 +129,21 @@ export const DATA: PortfolioData = {
       desc: "A free, analytics-native football platform — founded it and built the entire stack solo on a 3-person team: a Python data pipeline, a Supabase Postgres backend, and a Next.js frontend on Vercel, with a canonical entity-resolution layer unifying four providers and hybrid ISR/SSR serving 1,000+ pages.",
       tags: ["Next.js", "Supabase", "Python", "Vercel"],
       metric: { value: "~1,200", label: "visitors · month one" },
+      caseStudy: {
+        challenge:
+          "Football stats are everywhere — but four major providers each call the same player a different name with conflicting IDs. Building anything analytics-grade meant solving that mess first.",
+        role:
+          "Founder & sole engineer on a 3-person team. Owned architecture end-to-end: data ingestion, schema, entity resolution, backend, frontend, deploy, observability.",
+        process: [
+          "Wrote a Python pipeline that ingests four provider feeds nightly and normalizes them into a canonical schema",
+          "Built an entity-resolution layer (fuzzy match + manual override table) that unifies player/team IDs across sources",
+          "Modeled the analytics layer in Supabase Postgres with materialized views for hot paths",
+          "Frontend on Next.js (App Router) — hybrid ISR for player/team pages, SSR for live match views, 1,000+ pre-rendered routes",
+          "Deployed on Vercel with CI gates on schema drift",
+        ],
+        result:
+          "Live at flickstat.com — ~1,200 visitors in month one, organic growth, zero paid acquisition. Now the foundation for the next product layer.",
+      },
     },
     {
       title: "SAM Auto-Annotation",
@@ -130,6 +155,20 @@ export const DATA: PortfolioData = {
       desc: "One-click image labeling on Meta's Segment Anything Model with multi-format export (YOLO / COCO / Pascal VOC), batch processing, and a Gradio UI — cutting manual annotation effort by up to 80%.",
       tags: ["SAM", "Gradio", "Python"],
       metric: { value: "↓80%", label: "labeling effort" },
+      caseStudy: {
+        challenge:
+          "The team was burning hours hand-annotating drone imagery for downstream YOLO training. Manual labeling was the actual bottleneck on every new dataset.",
+        role:
+          "Sole engineer on the tool. Spec, model integration, UI, and rollout to the wider team.",
+        process: [
+          "Wrapped Meta's Segment Anything Model behind a single-click point/box prompt interface",
+          "Built multi-format export — YOLO, COCO, and Pascal VOC — so it slotted into existing training pipelines without adapter code",
+          "Added batch mode so a folder of images could be processed unattended",
+          "Wrapped it all in a Gradio UI that non-engineers on the team could use directly",
+        ],
+        result:
+          "Cut manual annotation effort by up to 80% on the team's drone datasets. Now part of the standard preprocessing flow at GarudaUAV.",
+      },
     },
     {
       title: "End-to-End ML Data Pipeline",
@@ -141,6 +180,20 @@ export const DATA: PortfolioData = {
       desc: "A config-driven platform turning raw file/DB/API data into trained models — validation, cleaning, feature processing, augmentation, and evaluation — with versioned, reproducible runs. Containerized with Docker behind a React/TypeScript control UI.",
       tags: ["FastAPI", "Docker", "Python", "React"],
       metric: { value: "Dockerized", label: "reproducible runs" },
+      caseStudy: {
+        challenge:
+          "Every ML side project re-implements the same five stages from scratch — load, validate, clean, augment, evaluate — and none of them are reproducible six weeks later.",
+        role:
+          "Open-source. Solo build. Architecture, API design, and frontend.",
+        process: [
+          "Designed a YAML-driven config layer so each pipeline run is fully declarative",
+          "Built a FastAPI backend that orchestrates the five stages with versioned artifacts at each step",
+          "React/TypeScript control UI for kicking off runs, comparing metrics, and inspecting failures",
+          "Dockerized the whole thing — same image runs locally, in CI, and on a cloud worker",
+        ],
+        result:
+          "Open-sourced on GitHub. Any data source → trained model in one config file, reproducible months later.",
+      },
     },
   ],
   skills: [
