@@ -249,8 +249,7 @@ export const DATA: PortfolioData = {
       org: "GarudaUAV",
       loc: "Noida",
       role: "AI / Computer Vision Engineering Intern",
-      when: "Jan 2026 — Present",
-      now: true,
+      when: "Jan 2026 — Jun 2026",
       desc: "Shipped a SAM auto-annotation tool with multi-format export, an LLM-powered model-eval report generator, and a retraining-free six-stage aerial tree-detection pipeline (GroundingDINO + ResNet-18 + Random Forest).",
       metrics: [
         { from: 0, to: 80, prefix: "↓", suffix: "%", label: "labeling effort" },
@@ -273,7 +272,7 @@ export const DATA: PortfolioData = {
       org: "Startup School",
       loc: "Mumbai",
       role: "Operations & Community Lead",
-      when: "Mar — Apr 2026",
+      when: "Oct — Dec 2025",
       desc: "Ran on-ground ops for a founder meetup, coordinated a 4-person distributed team, and secured a free Andheri venue via a DevX co-marketing partnership — removing the event's biggest cost for a bootstrapped startup.",
       metrics: [
         { from: 0, to: 4, label: "person team" },
