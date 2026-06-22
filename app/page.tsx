@@ -3,6 +3,7 @@ import { ScrollProgress } from "@/components/ScrollProgress";
 import { BackToTop } from "@/components/BackToTop";
 import { Hero } from "@/components/Hero";
 import { StatsBand } from "@/components/StatsBand";
+import { GitHubActivity } from "@/components/GitHubActivity";
 import { Work } from "@/components/Work";
 import { Skills } from "@/components/Skills";
 import { Experience } from "@/components/Experience";
@@ -26,6 +27,7 @@ export default function Page() {
       <main id="main">
         <Hero />
         <StatsBand />
+        <GitHubActivity />
         <Work />
         <Experience />
         <Certs />
