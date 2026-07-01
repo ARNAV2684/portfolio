@@ -1,32 +1,34 @@
 "use client";
 
-import { type CSSProperties } from "react";
-import { DATA, type SkillGroup } from "@/data/content";
+import { useState } from "react";
+import { DATA, type SkillGroup, type SkillItem } from "@/data/content";
 import { Reveal } from "./Reveal";
 import { SectionHeading } from "./SectionHeading";
-import { usePrefersReducedMotion } from "@/lib/useReducedMotion";
 
 /**
- * Skills & toolkit — a clean "label | non-stop ticker" row per group, contained
- * within the page width so labels and chips line up. Cloud & DevOps leads as the
- * accent "core" row; direction alternates row-to-row; the ticker pauses on hover.
- * Falls back to a static wrapped list under prefers-reduced-motion.
+ * Skills grid — each stack renders as a square tile with a logo on top and the
+ * name below. Icons come from cdn.simpleicons.org (monochrome SVGs). A tile
+ * whose slug is missing or whose icon fails to load falls back to a two-letter
+ * monogram — useful for stacks without a Simple Icons entry (SAM, YOLO, etc.).
  */
 export function Skills() {
   return (
     <section id="skills" className="scroll-mt-24 py-14 md:py-20">
       <div className="shell">
         <Reveal>
-          <SectionHeading
-            caption="cloud-first · systems · ml foundation"
-            title="Skills & toolkit"
-          />
+          <SectionHeading caption="// stack" title="Tech stack & tools." />
         </Reveal>
 
-        <div className="mt-8 flex flex-col gap-3">
+        <Reveal delay={60}>
+          <p className="mt-4 max-w-2xl leading-relaxed text-mut">
+            Platforms and tooling I work with day to day across cloud, DevOps, and AI/ML.
+          </p>
+        </Reveal>
+
+        <div className="mt-10 space-y-8">
           {DATA.skills.map((group, i) => (
-            <Reveal key={group.label} delay={i * 50}>
-              <SkillRow group={group} index={i} />
+            <Reveal key={group.label} delay={i * 60}>
+              <SkillsRow group={group} />
             </Reveal>
           ))}
         </div>
@@ -35,87 +37,57 @@ export function Skills() {
   );
 }
 
-/** Repeat items until the row is dense enough to loop seamlessly with no gaps. */
-function fill(items: string[], min = 14): string[] {
-  if (items.length === 0) return items;
-  const out = [...items];
-  let i = 0;
-  while (out.length < min) {
-    out.push(items[i % items.length]);
-    i += 1;
-  }
-  return out;
-}
-
-function SkillRow({ group, index }: { group: SkillGroup; index: number }) {
-  const reduced = usePrefersReducedMotion();
-  const reverse = index % 2 === 1;
-  const duration = `${28 + index * 3}s`;
-  const loop = fill(group.items);
-
+function SkillsRow({ group }: { group: SkillGroup }) {
   return (
-    <div
-      className={`flex flex-col gap-2 rounded-2xl border p-3 sm:flex-row sm:items-center sm:gap-4 ${
-        group.accent
-          ? "border-[var(--accent-ring)] bg-[var(--accent-soft)]"
-          : "border-line bg-card"
-      }`}
-    >
-      {/* label */}
-      <div className="flex shrink-0 items-center gap-2 px-1 sm:w-44">
-        <span
-          className={`font-mono-label ${group.accent ? "text-accent" : "text-ink"}`}
-        >
-          {group.label}
-        </span>
-        {group.accent && <span className="font-mono-label text-accent">★</span>}
+    <div>
+      <div className="mb-3 flex items-center gap-2 font-mono-label">
+        <span className={group.accent ? "text-accent" : "text-mut"}>{group.label}</span>
+        {group.accent && <span className="text-accent">★ core</span>}
       </div>
-
-      {/* ticker (or static list under reduced motion) */}
-      {reduced ? (
-        <ul className="flex flex-wrap gap-2">
-          {group.items.map((item) => (
-            <Chip key={item} label={item} accent={group.accent} />
-          ))}
-        </ul>
-      ) : (
-        <div className="marquee min-w-0 flex-1">
-          <ul
-            className={`marquee-track ${reverse ? "reverse" : ""}`}
-            style={{ "--marquee-duration": duration } as CSSProperties}
-          >
-            {loop.map((item, i) => (
-              <Chip key={`a-${i}`} label={item} accent={group.accent} />
-            ))}
-            {loop.map((item, i) => (
-              <Chip key={`b-${i}`} label={item} accent={group.accent} ariaHidden />
-            ))}
-          </ul>
-        </div>
-      )}
+      <div className="grid grid-cols-3 gap-3 sm:grid-cols-4 md:grid-cols-6 lg:grid-cols-8">
+        {group.items.map((item) => (
+          <SkillTile key={item.name} item={item} accent={group.accent} />
+        ))}
+      </div>
     </div>
   );
 }
 
-function Chip({
-  label,
-  accent,
-  ariaHidden,
-}: {
-  label: string;
-  accent?: boolean;
-  ariaHidden?: boolean;
-}) {
+function SkillTile({ item, accent }: { item: SkillItem; accent?: boolean }) {
+  const [errored, setErrored] = useState(false);
+  const showIcon = Boolean(item.slug) && !errored;
+  const monogram = item.name.replace(/[^A-Za-z0-9]/g, "").slice(0, 3).toUpperCase();
+
   return (
-    <li
-      aria-hidden={ariaHidden}
-      className={`shrink-0 cursor-default whitespace-nowrap rounded-full border px-3.5 py-1.5 font-mono-label transition-transform duration-200 hover:-translate-y-0.5 ${
-        accent
-          ? "border-[var(--accent-ring)] bg-card text-accent"
-          : "border-line bg-bg text-ink hover:border-accent"
+    <div
+      className={`group flex aspect-square flex-col items-center justify-center gap-2 rounded-xl border bg-card p-3 transition-colors ${
+        accent ? "border-[var(--accent-ring)] hover:border-accent" : "border-line hover:border-accent"
       }`}
+      title={item.name}
     >
-      {label}
-    </li>
+      <div className="grid h-10 w-10 place-items-center">
+        {showIcon ? (
+          // eslint-disable-next-line @next/next/no-img-element
+          <img
+            src={`https://cdn.simpleicons.org/${item.slug}`}
+            alt=""
+            aria-hidden
+            loading="lazy"
+            className="skill-icon h-full w-full object-contain"
+            onError={() => setErrored(true)}
+          />
+        ) : (
+          <span
+            className="font-mono-label text-sm font-bold text-accent"
+            aria-hidden
+          >
+            {monogram}
+          </span>
+        )}
+      </div>
+      <div className="w-full truncate text-center font-mono-label text-mut">
+        {item.name}
+      </div>
+    </div>
   );
 }
