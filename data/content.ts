@@ -75,9 +75,17 @@ export type StatTile =
   | { value: number; suffix?: string; label: string }
   | { literal: string; label: string };
 
+export interface SkillItem {
+  name: string;
+  /** Simple Icons slug (https://cdn.simpleicons.org/<slug>). If omitted the tile
+   *  renders a monogram of the first two letters — good for stacks without a logo
+   *  (SAM, GroundingDINO, YOLO variants, etc.). */
+  slug?: string;
+}
+
 export interface SkillGroup {
   label: string;
-  items: string[];
+  items: SkillItem[];
   /** The lead group (Cloud & DevOps) is visually emphasized to anchor the identity. */
   accent?: boolean;
 }
@@ -201,47 +209,62 @@ export const DATA: PortfolioData = {
       label: "Cloud & DevOps",
       accent: true,
       items: [
-        "AWS (ECS · RDS · ALB · ECR)",
-        "Terraform",
-        "Docker",
-        "Kubernetes",
-        "CI/CD",
-        "CloudWatch",
-        "Git",
+        { name: "AWS", slug: "amazonwebservices" },
+        { name: "Terraform", slug: "terraform" },
+        { name: "Docker", slug: "docker" },
+        { name: "Kubernetes", slug: "kubernetes" },
+        { name: "GitHub Actions", slug: "githubactions" },
+        { name: "CloudWatch", slug: "amazoncloudwatch" },
+        { name: "Git", slug: "git" },
+        { name: "Linux", slug: "linux" },
       ],
     },
     {
       label: "AI / ML & CV",
       items: [
-        "PyTorch",
-        "TensorFlow",
-        "OpenCV",
-        "YOLOv8 / v11",
-        "SAM",
-        "GroundingDINO",
-        "ResNet",
-        "scikit-learn",
-        "LLMs / AI agents",
+        { name: "PyTorch", slug: "pytorch" },
+        { name: "TensorFlow", slug: "tensorflow" },
+        { name: "OpenCV", slug: "opencv" },
+        { name: "scikit-learn", slug: "scikitlearn" },
+        { name: "YOLO" },
+        { name: "SAM" },
+        { name: "GroundingDINO" },
+        { name: "ResNet" },
+        { name: "LLM Agents" },
       ],
     },
     {
       label: "Web & Backend",
       items: [
-        "Next.js",
-        "React",
-        "Node.js",
-        "FastAPI",
-        "Tailwind CSS",
-        "Supabase (Postgres)",
+        { name: "Next.js", slug: "nextdotjs" },
+        { name: "React", slug: "react" },
+        { name: "Node.js", slug: "nodedotjs" },
+        { name: "FastAPI", slug: "fastapi" },
+        { name: "Tailwind", slug: "tailwindcss" },
+        { name: "Supabase", slug: "supabase" },
+        { name: "Vercel", slug: "vercel" },
       ],
     },
     {
       label: "Languages",
-      items: ["Python", "TypeScript", "Go", "C", "SQL"],
+      items: [
+        { name: "Python", slug: "python" },
+        { name: "TypeScript", slug: "typescript" },
+        { name: "Go", slug: "go" },
+        { name: "C", slug: "c" },
+        { name: "SQL", slug: "postgresql" },
+      ],
     },
     {
       label: "Tools",
-      items: ["Playwright", "n8n", "Jupyter", "Cursor", "VS Code", "Notion"],
+      items: [
+        { name: "Playwright", slug: "playwright" },
+        { name: "n8n", slug: "n8n" },
+        { name: "Jupyter", slug: "jupyter" },
+        { name: "Cursor", slug: "cursor" },
+        { name: "VS Code", slug: "visualstudiocode" },
+        { name: "Notion", slug: "notion" },
+      ],
     },
   ],
   experience: [

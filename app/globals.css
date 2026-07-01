@@ -352,6 +352,24 @@ a {
   }
 }
 
+/* Skills grid — Simple Icons CDN returns monochrome black SVGs. Normalize
+   them to the current theme ink color so tiles read cleanly in both modes. */
+.skill-icon {
+  filter: brightness(0);
+  transition: filter 0.2s ease;
+}
+.dark .skill-icon {
+  filter: brightness(0) invert(1);
+}
+.group:hover .skill-icon {
+  filter: brightness(0) saturate(100%) invert(24%) sepia(96%) saturate(3000%)
+    hue-rotate(236deg) brightness(95%) contrast(96%);
+}
+.dark .group:hover .skill-icon {
+  filter: brightness(0) saturate(100%) invert(38%) sepia(87%) saturate(3200%)
+    hue-rotate(232deg) brightness(100%) contrast(96%);
+}
+
 /* Case study drawer reveal — subtle slide-down + fade so the panel feels
    like it grew out of the card rather than appearing. */
 @keyframes caseStudyReveal {
