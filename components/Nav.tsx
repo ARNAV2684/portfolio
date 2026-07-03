@@ -93,6 +93,14 @@ export function Nav() {
               );
             })}
           </ul>
+          <button
+            type="button"
+            aria-label="Open command palette"
+            onClick={() => window.dispatchEvent(new CustomEvent("cmdk:open"))}
+            className="inline-flex items-center gap-1.5 rounded-full border border-line px-3 py-2 font-mono-label text-mut transition-colors hover:border-accent hover:text-accent"
+          >
+            <span aria-hidden>⌘</span>K
+          </button>
           <a
             href="#contact"
             className="rounded-full bg-ink px-4 py-2 text-sm font-semibold text-bg transition-opacity hover:opacity-90"

@@ -287,15 +287,32 @@ a {
   }
 }
 
-/* Hero status panel: a fill-on-load training bar + a blinking terminal caret. */
-.hero-bar {
-  width: 0;
-  animation: hero-fill 2.4s cubic-bezier(0.2, 0.7, 0.2, 1) 0.3s forwards;
+/* Hero headline accent: a one-time gradient sweep on load, settling into a
+   static accent gradient. Falls back to plain accent when unsupported. */
+.hero-accent-shimmer {
+  background: linear-gradient(
+    105deg,
+    var(--accent) 0%,
+    #8a90ff 28%,
+    var(--accent) 55%,
+    var(--accent) 100%
+  );
+  background-size: 220% 100%;
+  background-position: 120% 0;
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  animation: shimmer-sweep 2.6s cubic-bezier(0.3, 0.6, 0.2, 1) 0.5s forwards;
 }
-@keyframes hero-fill {
+@keyframes shimmer-sweep {
   to {
-    width: 80%;
+    background-position: 0% 0;
   }
+}
+
+/* Hero status panel: stage-synced deploy bar + a blinking terminal caret. */
+.deploy-bar {
+  transition: width 0.55s cubic-bezier(0.2, 0.7, 0.2, 1);
 }
 .hero-caret {
   animation: caret-blink 1.1s steps(1) infinite;
@@ -406,11 +423,8 @@ a {
   .shine:hover::before,
   .aurora,
   .hero-caret,
+  .hero-accent-shimmer,
   .marquee-track {
-    animation: none !important;
-  }
-  .hero-bar {
-    width: 80% !important;
     animation: none !important;
   }
   *,
