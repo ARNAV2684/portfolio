@@ -81,6 +81,9 @@ export interface SkillItem {
    *  renders a monogram of the first two letters — good for stacks without a logo
    *  (SAM, GroundingDINO, YOLO variants, etc.). */
   slug?: string;
+  /** Full icon URL override — for brands missing from Simple Icons (e.g. AWS,
+   *  removed on trademark grounds; served from devicon instead). */
+  icon?: string;
 }
 
 export interface SkillGroup {
@@ -209,12 +212,15 @@ export const DATA: PortfolioData = {
       label: "Cloud & DevOps",
       accent: true,
       items: [
-        { name: "AWS", slug: "amazonwebservices" },
+        {
+          name: "AWS",
+          icon: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/amazonwebservices/amazonwebservices-plain-wordmark.svg",
+        },
         { name: "Terraform", slug: "terraform" },
         { name: "Docker", slug: "docker" },
         { name: "Kubernetes", slug: "kubernetes" },
         { name: "GitHub Actions", slug: "githubactions" },
-        { name: "CloudWatch", slug: "amazoncloudwatch" },
+        { name: "CloudWatch" }, // also purged from Simple Icons — monogram tile
         { name: "Git", slug: "git" },
         { name: "Linux", slug: "linux" },
       ],

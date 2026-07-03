@@ -352,22 +352,22 @@ a {
   }
 }
 
-/* Skills grid — Simple Icons CDN returns monochrome black SVGs. Normalize
-   them to the current theme ink color so tiles read cleanly in both modes. */
+/* Skills grid — logos render in their original brand colors on a white chip
+   (see Skills.tsx), so no theme tinting; just a little life on hover. */
 .skill-icon {
-  filter: brightness(0);
-  transition: filter 0.2s ease;
-}
-.dark .skill-icon {
-  filter: brightness(0) invert(1);
+  transition: transform 0.2s ease;
 }
 .group:hover .skill-icon {
-  filter: brightness(0) saturate(100%) invert(24%) sepia(96%) saturate(3000%)
-    hue-rotate(236deg) brightness(95%) contrast(96%);
+  transform: scale(1.12);
 }
-.dark .group:hover .skill-icon {
-  filter: brightness(0) saturate(100%) invert(38%) sepia(87%) saturate(3200%)
-    hue-rotate(232deg) brightness(100%) contrast(96%);
+
+/* Animated theme toggle — ThemeToggle drives a clip-path circle wipe through
+   the View Transitions API; kill the default cross-fade so the wipe is the
+   only animation. */
+::view-transition-old(root),
+::view-transition-new(root) {
+  animation: none;
+  mix-blend-mode: normal;
 }
 
 /* Case study drawer reveal — subtle slide-down + fade so the panel feels
