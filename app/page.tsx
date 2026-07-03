@@ -1,6 +1,7 @@
 import { Nav } from "@/components/Nav";
 import { ScrollProgress } from "@/components/ScrollProgress";
 import { BackToTop } from "@/components/BackToTop";
+import { CommandPalette } from "@/components/CommandPalette";
 import { Hero } from "@/components/Hero";
 import { StatsBand } from "@/components/StatsBand";
 import { GitHubActivity } from "@/components/GitHubActivity";
@@ -37,6 +38,7 @@ export default function Page() {
       </main>
       <Footer />
       <BackToTop />
+      <CommandPalette />
     </>
   );
 }
