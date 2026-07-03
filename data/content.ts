@@ -110,12 +110,12 @@ export interface PortfolioData {
 
 export const DATA: PortfolioData = {
   name: "Arnav Gupta",
-  role: "Cloud & DevOps Engineer",
-  status: "shipping flickstat · open to cloud / DevOps roles ’26",
+  role: "AI & MLOps Engineer",
+  status: "shipping flickstat · open to opportunities ’26",
   hero: {
     line1: "I design systems",
     line2accent: "and ship them to the cloud.",
-    sub: "Cloud & DevOps engineer who loves taking a blank repo to production — architecture, AWS infra, containers, CI/CD — with a year of hands-on ML & computer-vision work as the foundation. Give me something to build and I learn it and ship it.",
+    sub: "AI & MLOps engineer who loves taking a blank repo to production — ML pipelines, AWS infra, containers, CI/CD — backed by a year of hands-on ML & computer-vision work. Give me something to build and I learn it and ship it.",
   },
   links: {
     email: "arug2004@gmail.com",
@@ -125,7 +125,7 @@ export const DATA: PortfolioData = {
   },
   stats: [
     { value: 2, suffix: "×", label: "AWS certified" },
-    { value: 1200, suffix: "+", label: "Flickstat visitors" },
+    { value: 2000, suffix: "+", label: "Flickstat visitors" },
     { value: 20, suffix: "+", label: "hackathons & meetups" },
     { literal: "’26", label: "graduating" },
   ],
@@ -139,7 +139,7 @@ export const DATA: PortfolioData = {
       media: { kind: "live", src: "https://flickstat.com", poster: "" },
       desc: "A free, analytics-native football platform — founded it and built the entire stack solo on a 3-person team: a Python data pipeline, a Supabase Postgres backend, and a Next.js frontend on Vercel, with a canonical entity-resolution layer unifying four providers and hybrid ISR/SSR serving 1,000+ pages.",
       tags: ["Next.js", "Supabase", "Python", "Vercel"],
-      metric: { value: "~1,200", label: "visitors · month one" },
+      metric: { value: "2,000+", label: "visitors" },
       caseStudy: {
         challenge:
           "Football stats are everywhere — but four major providers each call the same player a different name with conflicting IDs. Building anything analytics-grade meant solving that mess first.",
@@ -153,7 +153,7 @@ export const DATA: PortfolioData = {
           "Deployed on Vercel with CI gates on schema drift",
         ],
         result:
-          "Live at flickstat.com — ~1,200 visitors in month one, organic growth, zero paid acquisition. Now the foundation for the next product layer.",
+          "Live at flickstat.com — ~1,200 visitors in month one, 2,000+ and counting now, all organic with zero paid acquisition. Now the foundation for the next product layer.",
       },
     },
     {
@@ -163,9 +163,9 @@ export const DATA: PortfolioData = {
       action: "▶ demo clip",
       href: "",
       media: { kind: "video", src: "/clips/sam-demo.mp4", poster: "" },
-      desc: "One-click image labeling on Meta's Segment Anything Model with multi-format export (YOLO / COCO / Pascal VOC), batch processing, and a Gradio UI — cutting manual annotation effort by up to 80%.",
+      desc: "One-click image labeling on Meta's Segment Anything Model with multi-format export (YOLO / COCO / Pascal VOC), batch processing, and a Gradio UI — cutting manual annotation effort by up to 50%.",
       tags: ["SAM", "Gradio", "Python"],
-      metric: { value: "↓80%", label: "labeling effort" },
+      metric: { value: "↓50%", label: "labeling effort" },
       caseStudy: {
         challenge:
           "The team was burning hours hand-annotating drone imagery for downstream YOLO training. Manual labeling was the actual bottleneck on every new dataset.",
@@ -178,7 +178,7 @@ export const DATA: PortfolioData = {
           "Wrapped it all in a Gradio UI that non-engineers on the team could use directly",
         ],
         result:
-          "Cut manual annotation effort by up to 80% on the team's drone datasets. Now part of the standard preprocessing flow at GarudaUAV.",
+          "Cut manual annotation effort by up to 50% on the team's drone datasets. Now part of the standard preprocessing flow at GarudaUAV.",
       },
     },
     {
@@ -281,7 +281,7 @@ export const DATA: PortfolioData = {
       when: "Jan 2026 — Jun 2026",
       desc: "Shipped a SAM auto-annotation tool with multi-format export, an LLM-powered model-eval report generator, and a retraining-free six-stage aerial tree-detection pipeline (GroundingDINO + ResNet-18 + Random Forest).",
       metrics: [
-        { from: 0, to: 80, prefix: "↓", suffix: "%", label: "labeling effort" },
+        { from: 0, to: 50, prefix: "↓", suffix: "%", label: "labeling effort" },
         { from: 0, to: 8, label: "eval metrics auto-extracted" },
       ],
     },
