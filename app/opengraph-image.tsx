@@ -5,7 +5,7 @@ import { DATA } from "@/data/content";
 export const runtime = "edge";
 
 // Custom social card — name + role + accent on the paper bg (CLAUDE.md §8, high priority).
-export const alt = "Arnav Gupta — Cloud & DevOps Engineer";
+export const alt = "Arnav Gupta — AI & MLOps Engineer";
 export const size = { width: 1200, height: 630 };
 export const contentType = "image/png";
 

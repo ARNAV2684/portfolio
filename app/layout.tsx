@@ -10,7 +10,7 @@ import "./globals.css";
 
 // Canonical / OG base URL.
 const SITE_URL = "https://arnav.works";
-const TITLE = "Arnav Gupta — Cloud & DevOps Engineer";
+const TITLE = "Arnav Gupta — AI & MLOps Engineer";
 
 export const metadata: Metadata = {
   metadataBase: new URL(SITE_URL),
@@ -21,6 +21,8 @@ export const metadata: Metadata = {
   creator: "Arnav Gupta",
   keywords: [
     "Arnav Gupta",
+    "AI Engineer",
+    "MLOps Engineer",
     "Cloud Engineer",
     "DevOps Engineer",
     "AWS Solutions Architect",
