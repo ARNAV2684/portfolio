@@ -20,7 +20,7 @@ const STAGES = LOG.length - 1; // the command itself isn't a stage
 
 const ROWS = [
   { k: "stack", v: "aws · docker · terraform" },
-  { k: "status", v: "shipping flickstat" },
+  { k: "status", v: "open to opportunities" },
 ];
 
 const TONE_CLASS: Record<(typeof LOG)[number]["tone"], string> = {
