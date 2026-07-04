@@ -42,7 +42,20 @@ export function ProjectCard({ project }: { project: Project }) {
             </span>
           </div>
 
-          <h3 className="mt-2 text-2xl">{project.title}</h3>
+          <h3 className="mt-2 text-2xl">
+            {project.href ? (
+              <a
+                href={project.href}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="transition-colors hover:text-accent"
+              >
+                {project.title}
+              </a>
+            ) : (
+              project.title
+            )}
+          </h3>
           <p className="mt-3 max-w-[52ch] leading-relaxed text-mut">{project.desc}</p>
 
           {project.metric && (
@@ -162,8 +175,8 @@ function Media({ project }: { project: Project }) {
   const { media } = project;
 
   if (media.kind === "live") {
-    return (
-      <div className="live-tile relative z-[1] min-h-[200px] overflow-hidden md:min-h-full">
+    const tile = (
+      <div className="live-tile group/tile relative z-[1] min-h-[200px] overflow-hidden md:min-h-full">
         {media.src && (
           <iframe
             src={media.src}
@@ -184,11 +197,32 @@ function Media({ project }: { project: Project }) {
             }}
           />
         )}
+        {project.href && (
+          <div className="absolute inset-0 z-[5] grid place-items-center bg-black/0 opacity-0 transition-all duration-200 group-hover/tile:bg-black/25 group-hover/tile:opacity-100">
+            <span className="inline-flex items-center gap-1.5 rounded-full bg-white px-3 py-1.5 font-mono-label text-ink shadow-lg">
+              visit site ↗
+            </span>
+          </div>
+        )}
         <span className="absolute bottom-3 left-3 z-10 inline-flex items-center gap-2 rounded-full bg-black/35 px-2.5 py-1 font-mono-label text-white/90 backdrop-blur">
           <span className="status-dot" aria-hidden />
           live · flickstat.com
         </span>
       </div>
+    );
+
+    if (!project.href) return tile;
+
+    return (
+      <a
+        href={project.href}
+        target="_blank"
+        rel="noopener noreferrer"
+        aria-label={`Visit ${project.title} (opens in a new tab)`}
+        className="block"
+      >
+        {tile}
+      </a>
     );
   }
 

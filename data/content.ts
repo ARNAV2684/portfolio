@@ -111,7 +111,7 @@ export interface PortfolioData {
 export const DATA: PortfolioData = {
   name: "Arnav Gupta",
   role: "AI & MLOps Engineer",
-  status: "shipping flickstat · open to opportunities ’26",
+  status: "open to opportunities ’26 · building flickstat on the side",
   hero: {
     line1: "I design systems",
     line2accent: "and ship them to the cloud.",
