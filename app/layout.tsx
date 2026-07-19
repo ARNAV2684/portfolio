@@ -2,14 +2,14 @@ import type { Metadata, Viewport } from "next";
 import type { ReactNode } from "react";
 import { GeistMono } from "geist/font/mono";
 import { Providers } from "./providers";
+import { PersonJsonLd } from "@/components/PersonJsonLd";
 import { DATA } from "@/data/content";
+import { IS_GH_PAGES_BUILD, SITE_URL } from "@/lib/seo";
 import "./globals.css";
 
 // Hanken Grotesque (display/body) is loaded via @import in globals.css; Geist Mono is
 // self-hosted via the `geist` package. Both expose CSS vars consumed in tailwind.config.ts.
 
-// Canonical / OG base URL.
-const SITE_URL = "https://arnav.works";
 const TITLE = "Arnav Gupta — AI & MLOps Engineer";
 
 export const metadata: Metadata = {
@@ -23,16 +23,15 @@ export const metadata: Metadata = {
     "Arnav Gupta",
     "AI Engineer",
     "MLOps Engineer",
-    "Cloud Engineer",
-    "DevOps Engineer",
+    "Machine Learning Engineer",
+    "Computer Vision",
     "AWS Solutions Architect",
-    "System Design",
     "Docker",
     "Terraform",
-    "MLOps",
-    "Next.js",
     "Flickstat",
   ],
+  // Always resolves to arnav.works via metadataBase, even when this page is
+  // served from the GitHub Pages mirror — see lib/seo.ts.
   alternates: { canonical: "/" },
   openGraph: {
     title: TITLE,
@@ -47,10 +46,11 @@ export const metadata: Metadata = {
     title: TITLE,
     description: DATA.hero.sub,
   },
-  robots: {
-    index: true,
-    follow: true,
-  },
+  // The GitHub Pages mirror is intentionally excluded from search indexes —
+  // it's a duplicate of arnav.works, not a separate page (see lib/seo.ts).
+  robots: IS_GH_PAGES_BUILD
+    ? { index: false, follow: false }
+    : { index: true, follow: true },
 };
 
 export const viewport: Viewport = {
@@ -64,6 +64,7 @@ export default function RootLayout({ children }: { children: ReactNode }) {
   return (
     <html lang="en" suppressHydrationWarning className={GeistMono.variable}>
       <body>
+        <PersonJsonLd />
         <Providers>{children}</Providers>
       </body>
     </html>
