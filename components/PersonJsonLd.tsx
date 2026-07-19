@@ -11,6 +11,10 @@ import { SITE_URL } from "@/lib/seo";
  * Deliberately omits `worksFor`/`alumniOf` — no current employer or
  * education entry is rendered on the page itself, and structured data
  * should describe only what's actually visible, not unlisted claims.
+ *
+ * `image` is pinned to the SITE_URL origin (not run through assetPath's
+ * basePath logic) — like `url`, it should always resolve to the canonical
+ * arnav.works copy of the photo regardless of which domain serves this page.
  */
 export function PersonJsonLd() {
   const schema = {
@@ -18,7 +22,7 @@ export function PersonJsonLd() {
     "@type": "Person",
     name: DATA.name,
     url: SITE_URL,
-    image: `${SITE_URL}/opengraph-image`,
+    image: `${SITE_URL}/arnav.jpg`,
     jobTitle: DATA.role,
     description: DATA.hero.sub,
     email: `mailto:${DATA.links.email}`,
