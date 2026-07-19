@@ -1,0 +1,26 @@
+# Arnav Gupta
+
+> AI & MLOps engineer. Takes a blank repo to production — ML pipelines, AWS infra,
+> containers, CI/CD — backed by a year of hands-on ML & computer-vision work.
+
+Canonical site: https://arnav.works
+GitHub: https://github.com/ARNAV2684
+LinkedIn: https://www.linkedin.com/in/arnav-gupta-2b8b202b2/
+
+## Sections
+
+- Selected work (/#work): Flickstat (founder, full-stack analytics platform),
+  SAM Auto-Annotation (GarudaUAV, computer vision), End-to-End ML Data Pipeline
+  (open source)
+- Experience (/#experience): GarudaUAV (AI/CV engineering), Startup School
+  (community operations)
+- Certifications (/#certs): AWS Solutions Architect Associate, AWS Cloud
+  Practitioner
+- Tech stack (/#skills): cloud/DevOps, AI/ML, web/backend, languages, tools
+- Contact (/#contact): email and social links
+
+## Notes for automated agents
+
+This is a single-page site; all sections above are anchors on one page, not
+separate URLs. The content at github.io/portfolio is a static mirror of this
+same page — https://arnav.works is the canonical, up-to-date source.
