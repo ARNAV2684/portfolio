@@ -51,6 +51,12 @@ export const metadata: Metadata = {
   robots: IS_GH_PAGES_BUILD
     ? { index: false, follow: false }
     : { index: true, follow: true },
+  // Google Search Console — URL prefix property for arnav.works, HTML tag
+  // method. (public/googleba15c9601844a912.html covers the HTML-file method
+  // as a second, redundant verification path.)
+  verification: {
+    google: "jvd20LL987JtRpexQfUuBzTSSyQ_8yu8v0S9WQEFAGg",
+  },
 };
 
 export const viewport: Viewport = {
