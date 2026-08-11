@@ -3,6 +3,7 @@ import type { ReactNode } from "react";
 import { GeistMono } from "geist/font/mono";
 import { Providers } from "./providers";
 import { PersonJsonLd } from "@/components/PersonJsonLd";
+import { StatCounter } from "@/components/StatCounter";
 import { DATA } from "@/data/content";
 import { IS_GH_PAGES_BUILD, SITE_URL } from "@/lib/seo";
 import "./globals.css";
@@ -72,6 +73,7 @@ export default function RootLayout({ children }: { children: ReactNode }) {
       <body>
         <PersonJsonLd />
         <Providers>{children}</Providers>
+        <StatCounter />
       </body>
     </html>
   );
