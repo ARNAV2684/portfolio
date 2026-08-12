@@ -125,7 +125,7 @@ export const DATA: PortfolioData = {
   },
   stats: [
     { value: 2, suffix: "×", label: "AWS certified" },
-    { value: 2000, suffix: "+", label: "Flickstat visitors" },
+    { value: 3500, suffix: "+", label: "Flickstat visitors" },
     { value: 20, suffix: "+", label: "hackathons & meetups" },
     { literal: "’26", label: "graduating" },
   ],
@@ -139,7 +139,7 @@ export const DATA: PortfolioData = {
       media: { kind: "live", src: "https://flickstat.com", poster: "" },
       desc: "A free, analytics-native football platform — founded it and built the entire stack solo on a 3-person team: a Python data pipeline, a Supabase Postgres backend, and a Next.js frontend on Vercel, with a canonical entity-resolution layer unifying four providers and hybrid ISR/SSR serving 1,000+ pages.",
       tags: ["Next.js", "Supabase", "Python", "Vercel"],
-      metric: { value: "2,000+", label: "visitors" },
+      metric: { value: "3,500+", label: "visitors" },
       caseStudy: {
         challenge:
           "Football stats are everywhere — but four major providers each call the same player a different name with conflicting IDs. Building anything analytics-grade meant solving that mess first.",
@@ -153,7 +153,7 @@ export const DATA: PortfolioData = {
           "Deployed on Vercel with CI gates on schema drift",
         ],
         result:
-          "Live at flickstat.com — ~1,200 visitors in month one, 2,000+ and counting now, all organic with zero paid acquisition. Now the foundation for the next product layer.",
+          "Live at flickstat.com — ~1,200 visitors in month one, 3,500+ and counting now, all organic with zero paid acquisition. Now the foundation for the next product layer.",
       },
     },
     {
