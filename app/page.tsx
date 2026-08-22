@@ -10,6 +10,7 @@ import { Skills } from "@/components/Skills";
 import { Experience } from "@/components/Experience";
 import { Certs } from "@/components/Certs";
 import { Community } from "@/components/Community";
+import { WhyIBuild } from "@/components/WhyIBuild";
 import { Contact } from "@/components/Contact";
 import { Footer } from "@/components/Footer";
 
@@ -34,6 +35,7 @@ export default function Page() {
         <Certs />
         <Community />
         <Skills />
+        <WhyIBuild />
         <Contact />
       </main>
       <Footer />

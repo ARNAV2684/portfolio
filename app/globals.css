@@ -1,7 +1,9 @@
-/* Display/body font. next/font/google lacks "Hanken Grotesque" in this Next version,
+/* Body font. next/font/google lacks "Hanken Grotesque" in this Next version,
    so we load it via @import (explicitly allowed by CLAUDE.md §1). Geist Mono stays
-   self-hosted via the `geist` package (see app/layout.tsx). */
-@import url("https://fonts.googleapis.com/css2?family=Hanken+Grotesque:wght@400;500;600;700;800&display=swap");
+   self-hosted via the `geist` package (see app/layout.tsx).
+   Display font is Martian Mono (Evil Martians, OFL-licensed, free via Google
+   Fonts) — used at 800 weight only, which is all every current heading uses. */
+@import url("https://fonts.googleapis.com/css2?family=Hanken+Grotesque:wght@400;500;600;700;800&family=Martian+Mono:wght@700;800&display=swap");
 
 @tailwind base;
 @tailwind components;
@@ -28,9 +30,13 @@
   --shadow-card: 0 1px 2px rgba(23, 22, 26, 0.04);
   --shadow-hover: 0 18px 40px -24px rgba(23, 22, 26, 0.35);
 
-  /* Fonts (mapped into Tailwind in tailwind.config.ts) */
+  /* Fonts (mapped into Tailwind in tailwind.config.ts). Display and body are
+     deliberately different families now — a distinctive mono-flavored display
+     face for identity (headlines, big numbers), a plain workhorse face for
+     anything meant to be read at length. */
   --font-hanken: "Hanken Grotesque", system-ui, sans-serif;
-  --font-display: var(--font-hanken), system-ui, sans-serif;
+  --font-martian: "Martian Mono", var(--font-geist-mono), ui-monospace, monospace;
+  --font-display: var(--font-martian);
   --font-body: var(--font-hanken), system-ui, sans-serif;
   --font-mono-stack: var(--font-geist-mono), ui-monospace, SFMono-Regular, monospace;
 }
@@ -77,13 +83,16 @@ body {
   color: #fff;
 }
 
-/* Headings use the display font with tight tracking (CLAUDE.md §2). */
+/* Headings use the display font (CLAUDE.md §2). Martian Mono is monospace —
+   every glyph has a fixed advance width, so the negative tracking that reads
+   as "tight and confident" on a proportional grotesk just looks broken here;
+   neutral tracking instead. */
 h1,
 h2,
 h3 {
   font-family: var(--font-display);
   font-weight: 800;
-  letter-spacing: -0.02em;
+  letter-spacing: 0;
   color: var(--ink);
 }
 
@@ -235,30 +244,6 @@ a {
     linear-gradient(135deg, #17161a, #2a2730);
 }
 
-/* Cursor-tracking spotlight. JS sets --mx/--my from pointer position
-   (see lib/useMouseGlow.ts); the glow fades in on hover, behind content. */
-.glow {
-  position: relative;
-}
-.glow::before {
-  content: "";
-  position: absolute;
-  inset: 0;
-  z-index: 0;
-  border-radius: inherit;
-  opacity: 0;
-  transition: opacity 0.4s ease;
-  background: radial-gradient(
-    480px circle at var(--mx, 50%) var(--my, 50%),
-    var(--accent-soft),
-    transparent 62%
-  );
-  pointer-events: none;
-}
-.glow:hover::before {
-  opacity: 1;
-}
-
 /* Soft animated aurora behind the hero — fills the wide layout with motion. */
 .aurora {
   position: absolute;
@@ -367,15 +352,6 @@ a {
   to {
     transform: translateX(0);
   }
-}
-
-/* Skills grid — logos render in their original brand colors on a white chip
-   (see Skills.tsx), so no theme tinting; just a little life on hover. */
-.skill-icon {
-  transition: transform 0.2s ease;
-}
-.group:hover .skill-icon {
-  transform: scale(1.12);
 }
 
 /* Animated theme toggle — ThemeToggle drives a clip-path circle wipe through

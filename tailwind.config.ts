@@ -26,7 +26,9 @@ const config: Config = {
       },
       fontFamily: {
         sans: ["var(--font-hanken)", "system-ui", "sans-serif"],
-        display: ["var(--font-hanken)", "system-ui", "sans-serif"],
+        // Follows --font-display in globals.css (single source of truth) —
+        // currently Martian Mono, so a plain fallback chain here is enough.
+        display: ["var(--font-display)", "system-ui", "sans-serif"],
         mono: ["var(--font-geist-mono)", "ui-monospace", "SFMono-Regular", "monospace"],
       },
       maxWidth: {
