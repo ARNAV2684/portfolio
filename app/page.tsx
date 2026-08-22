@@ -29,13 +29,13 @@ export default function Page() {
       <main id="main">
         <Hero />
         <StatsBand />
+        <WhyIBuild />
         <GitHubActivity />
         <Work />
         <Experience />
         <Certs />
         <Community />
         <Skills />
-        <WhyIBuild />
         <Contact />
       </main>
       <Footer />

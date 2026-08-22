@@ -1,4 +1,5 @@
-import { DATA, type SkillItem } from "@/data/content";
+import { DATA } from "@/data/content";
+import { iconUrl } from "@/lib/skillIcon";
 import { IconCloud } from "./IconCloud";
 import { Reveal } from "./Reveal";
 import { SectionHeading } from "./SectionHeading";
@@ -48,11 +49,4 @@ export function Skills() {
       </div>
     </section>
   );
-}
-
-/** Resolve a skill's icon URL: explicit override → Simple Icons slug → none. */
-function iconUrl(item: SkillItem): string | undefined {
-  if (item.icon) return item.icon;
-  if (item.slug) return `https://cdn.simpleicons.org/${item.slug}`;
-  return undefined;
 }
