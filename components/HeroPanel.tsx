@@ -142,7 +142,7 @@ export function HeroPanel() {
   const historyRef = useRef<string[]>([]);
   const historyIndexRef = useRef<number | null>(null);
   const interactiveRef = useRef(false);
-  const logEndRef = useRef<HTMLDivElement>(null);
+  const logBoxRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     const fmt = new Intl.DateTimeFormat("en-GB", {
@@ -198,9 +198,15 @@ export function HeroPanel() {
     };
   }, [reduced]);
 
-  // Auto-scroll the log to the newest line.
+  // Auto-scroll the log box to its newest line. Sets scrollTop directly on
+  // the box itself rather than using scrollIntoView — that call also scrolls
+  // *ancestor* scrollable regions (including the whole page) into view of the
+  // target, which hijacked the visitor's scroll position because the
+  // attract-mode loop above updates `log` continuously in the background,
+  // forever, whether or not anyone has ever touched the terminal.
   useEffect(() => {
-    logEndRef.current?.scrollIntoView({ block: "end" });
+    const box = logBoxRef.current;
+    if (box) box.scrollTop = box.scrollHeight;
   }, [log]);
 
   const engage = () => {
@@ -276,6 +282,7 @@ export function HeroPanel() {
 
       {/* log — scrollable once it grows past the reserved height */}
       <div
+        ref={logBoxRef}
         className="relative z-[1] mt-4 max-h-[11rem] min-h-[7.75rem] overflow-y-auto font-mono text-sm leading-6"
         aria-label="Terminal output"
       >
@@ -301,7 +308,6 @@ export function HeroPanel() {
             />
           </div>
         )}
-        <div ref={logEndRef} />
       </div>
 
       {/* real prompt — engaging it stops the attract-mode loop */}
