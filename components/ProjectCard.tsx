@@ -4,7 +4,6 @@ import { useEffect, useRef, useState } from "react";
 import type { Project } from "@/data/content";
 import { assetPath } from "@/lib/assetPath";
 import { usePrefersReducedMotion } from "@/lib/useReducedMotion";
-import { useMouseGlow } from "@/lib/useMouseGlow";
 
 // type badge colors (CLAUDE.md §7): LIVE→green, PRIVATE→accent, OPEN SOURCE→ink.
 const TYPE_STYLES: Record<Project["type"], string> = {
@@ -19,15 +18,11 @@ const TYPE_STYLES: Record<Project["type"], string> = {
  * is the proof (rendered as a caption, no link).
  */
 export function ProjectCard({ project }: { project: Project }) {
-  const onMove = useMouseGlow();
   const [open, setOpen] = useState(false);
   const panelId = `case-${project.title.replace(/\s+/g, "-").toLowerCase()}`;
 
   return (
-    <article
-      onMouseMove={onMove}
-      className="card-hover glow overflow-hidden rounded-card border border-line bg-card"
-    >
+    <article className="card-hover overflow-hidden rounded-card border border-line bg-card">
       <div className="grid md:grid-cols-[300px_1fr]">
         <Media project={project} />
         <div className="relative z-[1] flex flex-col p-6">

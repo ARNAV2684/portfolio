@@ -93,6 +93,15 @@ export interface SkillGroup {
   accent?: boolean;
 }
 
+export interface WhyIBuild {
+  caption: string;
+  heading: string;
+  /** Full-length version rendered on the page. */
+  paragraphs: string[];
+  /** Condensed version echoed by the terminal's `cat about.txt` command. */
+  terminalSummary: string;
+}
+
 export interface PortfolioData {
   name: string;
   role: string;
@@ -105,6 +114,7 @@ export interface PortfolioData {
   experience: Experience[];
   certs: Cert[];
   community: { p1: string; p2: string; cards: CommunityCard[] };
+  whyIBuild: WhyIBuild;
   contact: { eyebrow: string; heading: string; sub: string };
 }
 
@@ -335,6 +345,17 @@ export const DATA: PortfolioData = {
       { t: "Hackathon organizer", s: "ran & shipped at hackathons" },
       { t: "Startup School", s: "ops · outreach · Mumbai/Pune/Delhi" },
     ],
+  },
+  whyIBuild: {
+    caption: "// why I build",
+    heading: "Building is how I learn.",
+    paragraphs: [
+      "I learn fastest by building — nothing else comes close. Something happens mid-build that reading or watching never gives me: a thrill, a sense that I can do anything I set my mind to.",
+      "Architecting Flickstat's backend from scratch — every table, every route — felt like drawing the map of a city before anyone had lived in it. That part wasn't the hard part. The real thrill came after: real users, real feedback, a caching bug at 3am that made no sense until it suddenly did, staring at graphs until the shape of the problem finally showed itself.",
+      "That's the part I chase. Not the finished product — the moment right before it clicks.",
+    ],
+    terminalSummary:
+      "I learn by building — nothing else gives me that thrill. Architecting Flickstat's backend felt like drawing a city's map from scratch. The real high came later: 3am, a caching bug that made no sense until it did, staring at graphs until the problem's shape finally showed itself. That's the part I chase.",
   },
   contact: {
     eyebrow: "// say hi",
