@@ -363,6 +363,22 @@ a {
   mix-blend-mode: normal;
 }
 
+/* Systems diagram (Skills section): soft depth on each node, and an accent
+   "flow" animating along the connectors — the same visual language as the
+   hero grid's packets, so the diagram reads as part of the same system. */
+.diagram-node {
+  filter: drop-shadow(0 2px 6px rgba(0, 0, 0, 0.12));
+}
+.diagram-flow {
+  stroke-dasharray: 6 14;
+  animation: diagram-flow-move 2.2s linear infinite;
+}
+@keyframes diagram-flow-move {
+  to {
+    stroke-dashoffset: -20;
+  }
+}
+
 /* Case study drawer reveal — subtle slide-down + fade so the panel feels
    like it grew out of the card rather than appearing. */
 @keyframes caseStudyReveal {
@@ -400,6 +416,7 @@ a {
   .aurora,
   .hero-caret,
   .hero-accent-shimmer,
+  .diagram-flow,
   .marquee-track {
     animation: none !important;
   }
