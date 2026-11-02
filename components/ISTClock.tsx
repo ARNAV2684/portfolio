@@ -24,5 +24,5 @@ export function ISTClock() {
   }, []);
 
   // Render a stable placeholder until mounted to avoid SSR/client mismatch.
-  return <span suppressHydrationWarning>{time ?? "— IST"}</span>;
+  return <span suppressHydrationWarning>{time ?? "--:-- IST"}</span>;
 }

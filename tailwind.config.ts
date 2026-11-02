@@ -1,44 +1,31 @@
 import type { Config } from "tailwindcss";
 
 /**
- * Colors map to the CSS variables defined in app/globals.css so components
- * never hardcode hex values (see CLAUDE.md §2). Light + dark token sets live
- * in globals.css; `darkMode: "class"` is driven by next-themes.
+ * Tailwind supplies Preflight and utilities only; the design system lives in
+ * app/tokens.css (Wayfind) and the page CSS in app/globals.css. These colour
+ * and font names point at those tokens so any utility stays on the system.
+ * `.container` is the page's own (globals.css), so Tailwind's is switched off.
  */
 const config: Config = {
   darkMode: "class",
-  content: [
-    "./app/**/*.{ts,tsx}",
-    "./components/**/*.{ts,tsx}",
-    "./data/**/*.{ts,tsx}",
-  ],
+  content: ["./app/**/*.{ts,tsx}", "./components/**/*.{ts,tsx}", "./data/**/*.{ts,tsx}"],
+  corePlugins: { container: false },
   theme: {
     extend: {
       colors: {
-        bg: "var(--bg)",
-        card: "var(--card)",
-        ink: "var(--ink)",
-        mut: "var(--mut)",
-        line: "var(--line)",
-        accent: "var(--accent)",
-        green: "var(--green)",
-        danger: "var(--danger)",
+        bg: "var(--color-paper)",
+        card: "var(--color-paper-3)",
+        ink: "var(--color-ink)",
+        mut: "var(--color-muted)",
+        line: "var(--color-rule)",
+        accent: "var(--color-accent)",
+        green: "var(--color-success)",
+        danger: "var(--color-error)",
       },
       fontFamily: {
-        sans: ["var(--font-hanken)", "system-ui", "sans-serif"],
-        // Follows --font-display in globals.css (single source of truth) —
-        // currently Martian Mono, so a plain fallback chain here is enough.
-        display: ["var(--font-display)", "system-ui", "sans-serif"],
-        mono: ["var(--font-geist-mono)", "ui-monospace", "SFMono-Regular", "monospace"],
-      },
-      maxWidth: {
-        content: "1180px",
-      },
-      borderRadius: {
-        card: "16px",
-      },
-      transitionTimingFunction: {
-        reveal: "cubic-bezier(.2,.7,.2,1)",
+        sans: ["var(--font-body)"],
+        display: ["var(--font-display)"],
+        mono: ["var(--font-display)"],
       },
     },
   },

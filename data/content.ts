@@ -32,6 +32,10 @@ export interface Project {
   /** Optional headline impact stat, surfaced as a chip on the card so the proof
    *  reads in a 5-second scan. Omit when there's no honest number to lead with. */
   metric?: { value: string; label: string };
+  /** Optional second chip next to `metric` (e.g. page views beside visitors). */
+  secondaryMetric?: { value: string; label: string };
+  /** Optional sparkline rendered beside the metric chips. */
+  trend?: { label: string; points: number[] };
   /** Expandable case study — when present, the card shows a "read case study" toggle
    *  that reveals an in-card drawer with the long-form story. */
   caseStudy?: CaseStudy;
@@ -106,9 +110,11 @@ export interface PortfolioData {
   name: string;
   role: string;
   status: string;
-  hero: { line1: string; line2accent: string; sub: string };
+  hero: { line1: string; line2accent: string; line: string; sub: string };
   links: { email: string; github: string; linkedin: string; resume: string };
   stats: StatTile[];
+  /** Phrases looped by the full-bleed status ticker under the hero. */
+  ticker: string[];
   projects: Project[];
   skills: SkillGroup[];
   experience: Experience[];
@@ -121,11 +127,12 @@ export interface PortfolioData {
 export const DATA: PortfolioData = {
   name: "Arnav Gupta",
   role: "AI & MLOps Engineer",
-  status: "open to opportunities ’26 · building flickstat on the side",
+  status: "open to opportunities ’26, building flickstat on the side",
   hero: {
     line1: "I design systems",
     line2accent: "and ship them to the cloud.",
-    sub: "AI & MLOps engineer who loves taking a blank repo to production — ML pipelines, AWS infra, containers, CI/CD — backed by a year of hands-on ML & computer-vision work. Give me something to build and I learn it and ship it.",
+    line: "Arnav Gupta, AI & MLOps engineer in Mumbai: graduating ’26, open to opportunities.",
+    sub: "AI & MLOps engineer who loves taking a blank repo to production: ML pipelines, AWS infra, containers, CI/CD, backed by a year of hands-on ML & computer-vision work. Give me something to build and I learn it and ship it.",
   },
   links: {
     email: "arug2004@gmail.com",
@@ -133,47 +140,58 @@ export const DATA: PortfolioData = {
     linkedin: "https://www.linkedin.com/in/arnav-gupta-2b8b202b2/",
     resume: "/Arnav_Gupta_Resume.pdf",
   },
+  ticker: [
+    "open to opportunities ’26",
+    "shipping flickstat, 29,500+ page views",
+    "aws · docker · terraform · ci/cd",
+    "ml pipelines → production",
+    "graduating ’26",
+  ],
   stats: [
     { value: 2, suffix: "×", label: "AWS certified" },
-    { value: 5800, suffix: "+", label: "Flickstat visitors" },
+    { value: 7200, suffix: "+", label: "Flickstat visitors" },
     { value: 20, suffix: "+", label: "hackathons & meetups" },
     { literal: "’26", label: "graduating" },
   ],
   projects: [
     {
       title: "Flickstat",
-      kind: "Founder · Full-Stack & Systems",
+      kind: "Founder, full-stack & systems",
       type: "LIVE",
       action: "Visit flickstat.com ↗",
       href: "https://flickstat.com",
       media: { kind: "live", src: "https://flickstat.com", poster: "" },
-      desc: "A free, analytics-native football platform — founded it and built the entire stack solo on a 3-person team: a Python data pipeline, a Supabase Postgres backend, and a Next.js frontend on Vercel, with a canonical entity-resolution layer unifying four providers and hybrid ISR/SSR serving 1,000+ pages.",
+      desc: "A free, analytics-native football platform: founded it and built the entire stack solo on a 3-person team: a Python data pipeline, a Supabase Postgres backend, and a Next.js frontend on Vercel, with a canonical entity-resolution layer unifying four providers and hybrid ISR/SSR serving 1,000+ pages.",
       tags: ["Next.js", "Supabase", "Python", "Vercel"],
-      metric: { value: "5,800+", label: "visitors" },
+      metric: { value: "7,200+", label: "visitors" },
+      secondaryMetric: { value: "29,500+", label: "page views" },
+      // Monthly unique visitors, Mar–Oct 2026 (Vercel Analytics, rounded to the
+      // nearest ~10; October is month-to-date). Sums to ~7.3k total visitors.
+      trend: { label: "Monthly visitors, Apr to Oct ’26", points: [760, 370, 680, 1490, 1680, 990, 1320] },
       caseStudy: {
         challenge:
-          "Football stats are everywhere — but four major providers each call the same player a different name with conflicting IDs. Building anything analytics-grade meant solving that mess first.",
+          "Football stats are everywhere, but four major providers each call the same player a different name with conflicting IDs. Building anything analytics-grade meant solving that mess first.",
         role:
           "Founder & sole engineer on a 3-person team. Owned architecture end-to-end: data ingestion, schema, entity resolution, backend, frontend, deploy, observability.",
         process: [
           "Wrote a Python pipeline that ingests four provider feeds nightly and normalizes them into a canonical schema",
           "Built an entity-resolution layer (fuzzy match + manual override table) that unifies player/team IDs across sources",
           "Modeled the analytics layer in Supabase Postgres with materialized views for hot paths",
-          "Frontend on Next.js (App Router) — hybrid ISR for player/team pages, SSR for live match views, 1,000+ pre-rendered routes",
+          "Frontend on Next.js (App Router): hybrid ISR for player/team pages, SSR for live match views, 1,000+ pre-rendered routes",
           "Deployed on Vercel with CI gates on schema drift",
         ],
         result:
-          "Live at flickstat.com — ~1,200 visitors in month one, 5,800+ and counting now, all organic with zero paid acquisition. Now the foundation for the next product layer.",
+          "Live at flickstat.com: 7,200+ visitors and 29,500+ page views since launch, growing month over month, all organic with zero paid acquisition. Now the foundation for the next product layer.",
       },
     },
     {
       title: "SAM Auto-Annotation",
-      kind: "GarudaUAV · Computer Vision",
+      kind: "GarudaUAV, computer vision",
       type: "PRIVATE",
       action: "▶ demo clip",
       href: "",
       media: { kind: "video", src: "/clips/sam-demo.mp4", poster: "" },
-      desc: "One-click image labeling on Meta's Segment Anything Model with multi-format export (YOLO / COCO / Pascal VOC), batch processing, and a Gradio UI — cutting manual annotation effort by up to 50%.",
+      desc: "One-click image labeling on Meta’s Segment Anything Model with multi-format export (YOLO / COCO / Pascal VOC), batch processing, and a Gradio UI, cutting manual annotation effort by up to 50%.",
       tags: ["SAM", "Gradio", "Python"],
       metric: { value: "↓50%", label: "labeling effort" },
       caseStudy: {
@@ -182,35 +200,35 @@ export const DATA: PortfolioData = {
         role:
           "Sole engineer on the tool. Spec, model integration, UI, and rollout to the wider team.",
         process: [
-          "Wrapped Meta's Segment Anything Model behind a single-click point/box prompt interface",
-          "Built multi-format export — YOLO, COCO, and Pascal VOC — so it slotted into existing training pipelines without adapter code",
+          "Wrapped Meta’s Segment Anything Model behind a single-click point/box prompt interface",
+          "Built multi-format export (YOLO, COCO, and Pascal VOC) so it slotted into existing training pipelines without adapter code",
           "Added batch mode so a folder of images could be processed unattended",
           "Wrapped it all in a Gradio UI that non-engineers on the team could use directly",
         ],
         result:
-          "Cut manual annotation effort by up to 50% on the team's drone datasets. Now part of the standard preprocessing flow at GarudaUAV.",
+          "Cut manual annotation effort by up to 50% on the team’s drone datasets. Now part of the standard preprocessing flow at GarudaUAV.",
       },
     },
     {
       title: "End-to-End ML Data Pipeline",
-      kind: "Open Source · Systems",
+      kind: "Open source, systems",
       type: "OPEN SOURCE",
       action: "View on GitHub ↗",
       href: "https://github.com/ARNAV2684/DataPro",
-      media: { kind: "image", src: "/clips/datapro-screenshot.png", alt: "DataLab Pro — data type selection UI" },
-      desc: "A config-driven platform turning raw file/DB/API data into trained models — validation, cleaning, feature processing, augmentation, and evaluation — with versioned, reproducible runs. Containerized with Docker behind a React/TypeScript control UI.",
+      media: { kind: "image", src: "/clips/datapro-screenshot.png", alt: "DataLab Pro: the data type selection screen" },
+      desc: "A config-driven platform turning raw file/DB/API data into trained models (validation, cleaning, feature processing, augmentation, and evaluation) with versioned, reproducible runs. Containerized with Docker behind a React/TypeScript control UI.",
       tags: ["FastAPI", "Docker", "Python", "React"],
       metric: { value: "Dockerized", label: "reproducible runs" },
       caseStudy: {
         challenge:
-          "Every ML side project re-implements the same five stages from scratch — load, validate, clean, augment, evaluate — and none of them are reproducible six weeks later.",
+          "Every ML side project re-implements the same five stages from scratch (load, validate, clean, augment, evaluate) and none of them are reproducible six weeks later.",
         role:
           "Open-source. Solo build. Architecture, API design, and frontend.",
         process: [
           "Designed a YAML-driven config layer so each pipeline run is fully declarative",
           "Built a FastAPI backend that orchestrates the five stages with versioned artifacts at each step",
           "React/TypeScript control UI for kicking off runs, comparing metrics, and inspecting failures",
-          "Dockerized the whole thing — same image runs locally, in CI, and on a cloud worker",
+          "Dockerized the whole thing: the same image runs locally, in CI, and on a cloud worker",
         ],
         result:
           "Open-sourced on GitHub. Any data source → trained model in one config file, reproducible months later.",
@@ -288,7 +306,7 @@ export const DATA: PortfolioData = {
       org: "GarudaUAV",
       loc: "Noida",
       role: "AI / Computer Vision Engineering Intern",
-      when: "Jan 2026 — Jun 2026",
+      when: "Jan to Jun 2026",
       desc: "Shipped a SAM auto-annotation tool with multi-format export, an LLM-powered model-eval report generator, and a retraining-free six-stage aerial tree-detection pipeline (GroundingDINO + ResNet-18 + Random Forest).",
       metrics: [
         { from: 0, to: 50, prefix: "↓", suffix: "%", label: "labeling effort" },
@@ -299,8 +317,8 @@ export const DATA: PortfolioData = {
       org: "GarudaUAV",
       loc: "Noida",
       role: "AI / ML Intern",
-      when: "Jun — Aug 2025",
-      desc: "Built a YOLOv8 culvert-detection pipeline for drone imagery — tuned class-specific thresholds, cut false positives by 18%, and expanded the dataset with mosaic augmentation and synthetic data. This is where my ML foundation was built.",
+      when: "Jun to Aug 2025",
+      desc: "Built a YOLOv8 culvert-detection pipeline for drone imagery: tuned class-specific thresholds, cut false positives by 18%, and expanded the dataset with mosaic augmentation and synthetic data. This is where my ML foundation was built.",
       metrics: [
         { from: 0.63, to: 0.71, decimals: 2, label: "mAP@0.50 ↑" },
         { from: 0.68, to: 0.76, decimals: 2, label: "recall ↑" },
@@ -311,8 +329,8 @@ export const DATA: PortfolioData = {
       org: "Startup School",
       loc: "Mumbai",
       role: "Operations & Community Lead",
-      when: "Oct — Dec 2025",
-      desc: "Ran on-ground ops for a founder meetup, coordinated a 4-person distributed team, and secured a free Andheri venue via a DevX co-marketing partnership — removing the event's biggest cost for a bootstrapped startup.",
+      when: "Oct to Dec 2025",
+      desc: "Ran on-ground ops for a founder meetup, coordinated a 4-person distributed team, and secured a free Andheri venue via a DevX co-marketing partnership, removing the event’s biggest cost for a bootstrapped startup.",
       metrics: [
         { from: 0, to: 4, label: "person team" },
         { from: 0, to: 3, label: "cities of outreach" },
@@ -338,28 +356,28 @@ export const DATA: PortfolioData = {
     },
   ],
   community: {
-    p1: "I spend a lot of my time inside India's tech community — not just attending, but hosting. I help run and show up at Mumbai tech meetups, connecting builders and turning rooms full of strangers into people who ship together afterwards.",
-    p2: "Hackathons are where a lot of my projects start — tight deadlines, a blank repo, and a working demo by the end. I've organized a couple myself, and they're the fastest way I know to learn a new stack and find the people worth building with. That same instinct led to my Startup School run — owning on-ground ops for a founder meetup and pitching a co-marketing partnership that landed a free venue.",
+    p1: "I spend a lot of my time inside India’s tech community: not just attending, but hosting. I help run and show up at Mumbai tech meetups, connecting builders and turning rooms full of strangers into people who ship together afterwards.",
+    p2: "Hackathons are where a lot of my projects start: tight deadlines, a blank repo, and a working demo by the end. I’ve organized a couple myself, and they’re the fastest way I know to learn a new stack and find the people worth building with. That same instinct led to my Startup School run, owning on-ground ops for a founder meetup and pitching a co-marketing partnership that landed a free venue.",
     cards: [
       { t: "Meetup host", s: "Mumbai tech community" },
       { t: "Hackathon organizer", s: "ran & shipped at hackathons" },
-      { t: "Startup School", s: "ops · outreach · Mumbai/Pune/Delhi" },
+      { t: "Startup School", s: "ops and outreach, Mumbai/Pune/Delhi" },
     ],
   },
   whyIBuild: {
     caption: "// why I build",
     heading: "Building is how I learn.",
     paragraphs: [
-      "I learn fastest by building — nothing else comes close. Something happens mid-build that reading or watching never gives me: a thrill, a sense that I can do anything I set my mind to.",
-      "Architecting Flickstat's backend from scratch — every table, every route — felt like drawing the map of a city before anyone had lived in it. That part wasn't the hard part. The real thrill came after: real users, real feedback, a caching bug at 3am that made no sense until it suddenly did, staring at graphs until the shape of the problem finally showed itself.",
-      "That's the part I chase. Not the finished product — the moment right before it clicks.",
+      "I learn fastest by building; nothing else comes close. Something happens mid-build that reading or watching never gives me: a thrill, a sense that I can do anything I set my mind to.",
+      "Architecting Flickstat’s backend from scratch, every table and every route, felt like drawing the map of a city before anyone had lived in it. That part wasn’t the hard part. The real thrill came after: real users, real feedback, a caching bug at 3am that made no sense until it suddenly did, staring at graphs until the shape of the problem finally showed itself.",
+      "That’s the part I chase. Not the finished product: the moment right before it clicks.",
     ],
     terminalSummary:
-      "I learn by building — nothing else gives me that thrill. Architecting Flickstat's backend felt like drawing a city's map from scratch. The real high came later: 3am, a caching bug that made no sense until it did, staring at graphs until the problem's shape finally showed itself. That's the part I chase.",
+      "I learn by building; nothing else gives me that thrill. Architecting Flickstat’s backend felt like drawing a city's map from scratch. The real high came later: 3am, a caching bug that made no sense until it did, staring at graphs until the problem’s shape finally showed itself. That’s the part I chase.",
   },
   contact: {
     eyebrow: "// say hi",
-    heading: "Let's build something.",
+    heading: "Let’s build something.",
     sub: "Got a role, a project, or just want to nerd out about cloud, systems, or ML? My inbox is open.",
   },
 };

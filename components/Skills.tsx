@@ -1,51 +1,35 @@
 import { DATA } from "@/data/content";
-import { iconUrl } from "@/lib/skillIcon";
-import { IconCloud } from "./IconCloud";
-import { Reveal } from "./Reveal";
-import { SectionHeading } from "./SectionHeading";
+import { HeroPanel } from "./HeroPanel";
 import { SystemsDiagram } from "./SystemsDiagram";
 
 /**
- * Skills — a rotating 3D icon cloud (all stacks with a Simple Icons entry,
- * original brand colors) next to the section header, and a systems diagram
- * below showing how the three things I build actually converge into one
- * pipeline, instead of an exhaustive logo-tile grid. The full tool list still
- * exists — it's just not the headline here anymore; the icon cloud carries
- * the "look at everything I use" job, the diagram carries "here's how it fits
- * together," and the terminal's `cat skills.txt` carries the raw enumeration.
+ * Stack: how the three things I build converge into one pipeline, drawn as the
+ * system it is; then every tool as rows, beside the shell that can list them too.
  */
 export function Skills() {
-  const cloudImages = DATA.skills
-    .flatMap((g) => g.items)
-    .map((item) => iconUrl(item))
-    .filter((url): url is string => Boolean(url));
-
   return (
-    <section id="skills" className="scroll-mt-24 py-14 md:py-20">
-      <div className="shell">
-        <div className="grid items-center gap-8 lg:grid-cols-[1fr_380px]">
-          <div>
-            <Reveal>
-              <SectionHeading caption="// stack" title="How it fits together." />
-            </Reveal>
-
-            <Reveal delay={60}>
-              <p className="mt-4 max-w-2xl leading-relaxed text-mut">
-                Cloud/DevOps, AI/ML, and the web layer aren't separate skill
-                lists — they all ship through the same pipeline. Give the
-                cloud a spin.
-              </p>
-            </Reveal>
-          </div>
-
-          <Reveal delay={120} className="justify-self-center">
-            <IconCloud images={cloudImages} size={340} />
-          </Reveal>
+    <section id="skills" className="section">
+      <div className="container">
+        <div className="head head--split head--rule">
+          <h2>How it fits together.</h2>
+          <p className="lead">
+            Cloud/DevOps, AI/ML, and the web layer aren’t separate skill lists: they all ship through the same pipeline.
+          </p>
         </div>
 
-        <Reveal delay={100} className="mt-10">
-          <SystemsDiagram />
-        </Reveal>
+        <SystemsDiagram />
+
+        <div className="grid12 stack">
+          <dl className="stack__rows">
+            {DATA.skills.map((g) => (
+              <div key={g.label}>
+                <dt>{g.label}</dt>
+                <dd>{g.items.map((i) => i.name).join(", ")}</dd>
+              </div>
+            ))}
+          </dl>
+          <HeroPanel />
+        </div>
       </div>
     </section>
   );

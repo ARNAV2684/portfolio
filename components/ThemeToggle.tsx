@@ -20,8 +20,8 @@ export function ThemeToggle() {
   const ref = useRef<HTMLButtonElement>(null);
   useEffect(() => setMounted(true), []);
 
-  // Site default is dark — assume dark pre-mount so the icon doesn't flash.
-  const isDark = mounted ? resolvedTheme === "dark" : true;
+  // Site default is light (Wayfind platform); assume light pre-mount so the icon doesn't flash.
+  const isDark = mounted ? resolvedTheme === "dark" : false;
   const next = isDark ? "light" : "dark";
 
   const toggle = async () => {
@@ -60,7 +60,7 @@ export function ThemeToggle() {
         }
       );
     } catch {
-      // Transition was skipped (rapid toggling) — theme is already set.
+      // Transition was skipped (rapid toggling); the theme is already set.
     }
   };
 
@@ -72,32 +72,18 @@ export function ThemeToggle() {
       aria-label={
         mounted ? `Switch to ${next} mode` : "Toggle color theme"
       }
-      className="grid h-10 w-10 place-items-center rounded-full border border-line text-ink transition-colors hover:border-accent hover:text-accent"
+      className="icon-btn"
     >
-      <span className="relative grid h-4 w-4 place-items-center" aria-hidden>
-        <svg
-          viewBox="0 0 24 24"
-          fill="none"
-          stroke="currentColor"
-          strokeWidth="2"
-          strokeLinecap="round"
-          className={`absolute h-4 w-4 transition-all duration-300 ${
-            isDark ? "rotate-90 scale-0 opacity-0" : "rotate-0 scale-100 opacity-100"
-          }`}
-        >
+      {isDark ? (
+        <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+          <path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z" />
+        </svg>
+      ) : (
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="square" aria-hidden="true">
           <circle cx="12" cy="12" r="4" />
           <path d="M12 2v2m0 16v2M4.9 4.9l1.4 1.4m11.4 11.4 1.4 1.4M2 12h2m16 0h2M4.9 19.1l1.4-1.4m11.4-11.4 1.4-1.4" />
         </svg>
-        <svg
-          viewBox="0 0 24 24"
-          fill="currentColor"
-          className={`absolute h-4 w-4 transition-all duration-300 ${
-            isDark ? "rotate-0 scale-100 opacity-100" : "-rotate-90 scale-0 opacity-0"
-          }`}
-        >
-          <path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z" />
-        </svg>
-      </span>
+      )}
     </button>
   );
 }

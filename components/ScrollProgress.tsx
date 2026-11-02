@@ -3,16 +3,19 @@
 import { useEffect, useState } from "react";
 
 /**
- * Thin accent bar fixed to the top edge that fills as the user scrolls through
- * the page. Sits ABOVE the sticky nav so it reads as a separate UI layer.
- * Hidden entirely when prefers-reduced-motion is set — feels like jitter then.
+ * A 3px cobalt bar across the top edge that fills as the visitor reads down the
+ * page, above the floating nav. Revealed with clip-path so nothing reflows.
+ * Hidden under prefers-reduced-motion.
  */
 export function ScrollProgress() {
   const [progress, setProgress] = useState(0);
+  const [reduced, setReduced] = useState(false);
 
   useEffect(() => {
-    const reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-    if (reduced) return;
+    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+      setReduced(true);
+      return;
+    }
 
     let frame = 0;
     const update = () => {
@@ -36,15 +39,11 @@ export function ScrollProgress() {
     };
   }, []);
 
+  if (reduced) return null;
+
   return (
-    <div
-      aria-hidden
-      className="pointer-events-none fixed inset-x-0 top-0 z-50 h-[2px] bg-transparent"
-    >
-      <div
-        className="h-full bg-accent transition-[width] duration-75 ease-out"
-        style={{ width: `${progress}%` }}
-      />
+    <div aria-hidden="true" className="progress">
+      <div className="progress__bar" style={{ clipPath: `inset(0 ${100 - progress}% 0 0)` }} />
     </div>
   );
 }

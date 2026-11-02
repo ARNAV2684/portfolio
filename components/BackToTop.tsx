@@ -2,10 +2,7 @@
 
 import { useEffect, useState } from "react";
 
-/**
- * Floating "back to top" pill — appears after the user scrolls past the hero,
- * positioned bottom-right. Subtle, accent-colored on hover.
- */
+/** Square back-to-top control, bottom right; shows once the visitor is past the hero. */
 export function BackToTop() {
   const [visible, setVisible] = useState(false);
 
@@ -20,14 +17,14 @@ export function BackToTop() {
     <button
       type="button"
       aria-label="Back to top"
+      tabIndex={visible ? 0 : -1}
       onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
-      className={`fixed bottom-6 right-6 z-40 grid h-11 w-11 place-items-center rounded-full border border-line bg-card text-ink shadow-[var(--shadow-card)] transition-all duration-300 hover:border-accent hover:text-accent ${
-        visible
-          ? "translate-y-0 opacity-100"
-          : "pointer-events-none translate-y-3 opacity-0"
-      }`}
+      data-visible={visible ? "true" : "false"}
+      className="to-top"
     >
-      <span aria-hidden className="text-lg leading-none">↑</span>
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="square" aria-hidden="true">
+        <path d="M12 19V5M5 12l7-7 7 7" />
+      </svg>
     </button>
   );
 }

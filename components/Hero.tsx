@@ -1,81 +1,51 @@
 import { DATA } from "@/data/content";
 import { assetPath } from "@/lib/assetPath";
-import { Reveal } from "./Reveal";
-import { HeroPanel } from "./HeroPanel";
-import { HeroGrid } from "./HeroGrid";
-import { Magnetic } from "./Magnetic";
 
-/** Hero (CLAUDE.md §5): status line, display headline, sub, CTA row.
- *  Two-column on desktop — copy on the left, an interactive status panel on the
- *  right — so the wide layout reads as intentional rather than empty. */
+/** Hero: the statement on an ink plate, low and left, with the one live sign
+ *  (Flickstat's real count) up and to the right. */
 export function Hero() {
-  const { hero, status, links, name } = DATA;
+  const { hero, links } = DATA;
+  const flickstat = DATA.projects.find((p) => p.type === "LIVE");
 
   return (
-    <section className="relative overflow-hidden">
-      <HeroGrid />
-      <span className="aurora" aria-hidden />
-      <div className="shell relative z-10 grid items-center gap-10 pb-12 pt-14 md:pb-20 md:pt-24 lg:grid-cols-[1.05fr_0.95fr] lg:gap-14">
-        <div>
-          <Reveal>
-            <p className="inline-flex items-center gap-2.5 rounded-full border border-line bg-card px-3.5 py-1.5 font-mono-label text-mut">
-              <span className="status-dot" aria-hidden />
-              {status}
-            </p>
-          </Reveal>
-
-          <Reveal delay={60}>
-            <p className="mt-7 font-mono-label text-mut">{name}</p>
-            <h1 className="mt-2 max-w-[20ch] text-[clamp(2.4rem,6.2vw,4.4rem)] leading-[1.03]">
-              {hero.line1}{" "}
-              <span className="hero-accent-shimmer text-accent">{hero.line2accent}</span>
-            </h1>
-          </Reveal>
-
-          <Reveal delay={120}>
-            <p className="mt-6 max-w-[540px] text-lg leading-relaxed text-mut">
-              {hero.sub}
-            </p>
-          </Reveal>
-
-          <Reveal delay={180}>
-            <div className="mt-9 flex flex-wrap items-center gap-3">
-              <Magnetic>
-                <a
-                  href={assetPath(links.resume)}
-                  download
-                  className="inline-flex items-center gap-2 rounded-full bg-ink px-5 py-3 text-sm font-semibold text-bg transition-opacity hover:opacity-90"
-                >
-                  Download résumé
-                </a>
-              </Magnetic>
-              <Magnetic>
-                <a
-                  href={links.github}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="inline-flex items-center gap-2 rounded-full border border-line px-5 py-3 text-sm font-semibold text-ink transition-colors hover:border-accent hover:text-accent"
-                >
-                  GitHub ↗
-                </a>
-              </Magnetic>
-              <Magnetic>
-                <a
-                  href={links.linkedin}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="inline-flex items-center gap-2 rounded-full border border-line px-5 py-3 text-sm font-semibold text-ink transition-colors hover:border-accent hover:text-accent"
-                >
-                  LinkedIn ↗
-                </a>
-              </Magnetic>
-            </div>
-          </Reveal>
+    <section className="hero plate" aria-labelledby="hero-title">
+      <div className="container grid12 hero__grid">
+        <div className="hero__copy">
+          <h1 id="hero-title">
+            {hero.line1} {hero.line2accent}
+          </h1>
+          <p className="lead hero__line">{hero.line}</p>
+          <div className="hero__actions">
+            <a href={assetPath(links.resume)} download className="btn btn--primary">
+              Download résumé
+            </a>
+            <a href={`mailto:${links.email}`} className="btn">
+              Email me
+            </a>
+          </div>
         </div>
 
-        <Reveal delay={160} className="hidden lg:block">
-          <HeroPanel />
-        </Reveal>
+        {flickstat?.metric && (
+          <aside className="hero__sign sign" aria-label="Live now: Flickstat">
+            <p className="sign__row">
+              <span className="live-sq" aria-hidden="true" />
+              Live now on flickstat.com
+            </p>
+            <div className="sign__body">
+              <p className="sign__figure">{flickstat.metric.value}</p>
+              <p className="sign__unit">{flickstat.metric.label} since launch</p>
+              {flickstat.secondaryMetric && (
+                <dl className="sign__pair">
+                  <dt>{flickstat.secondaryMetric.label}</dt>
+                  <dd>{flickstat.secondaryMetric.value}</dd>
+                </dl>
+              )}
+            </div>
+            <p className="sign__foot">
+              <small>Source: Vercel Analytics, Oct 2026</small>
+            </p>
+          </aside>
+        )}
       </div>
     </section>
   );
