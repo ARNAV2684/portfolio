@@ -32,6 +32,10 @@ export interface Project {
   /** Optional headline impact stat, surfaced as a chip on the card so the proof
    *  reads in a 5-second scan. Omit when there's no honest number to lead with. */
   metric?: { value: string; label: string };
+  /** Optional second chip next to `metric` (e.g. page views beside visitors). */
+  secondaryMetric?: { value: string; label: string };
+  /** Optional sparkline rendered beside the metric chips. */
+  trend?: { label: string; points: number[] };
   /** Expandable case study — when present, the card shows a "read case study" toggle
    *  that reveals an in-card drawer with the long-form story. */
   caseStudy?: CaseStudy;
@@ -109,6 +113,8 @@ export interface PortfolioData {
   hero: { line1: string; line2accent: string; sub: string };
   links: { email: string; github: string; linkedin: string; resume: string };
   stats: StatTile[];
+  /** Phrases looped by the full-bleed status ticker under the hero. */
+  ticker: string[];
   projects: Project[];
   skills: SkillGroup[];
   experience: Experience[];
@@ -133,9 +139,16 @@ export const DATA: PortfolioData = {
     linkedin: "https://www.linkedin.com/in/arnav-gupta-2b8b202b2/",
     resume: "/Arnav_Gupta_Resume.pdf",
   },
+  ticker: [
+    "open to opportunities ’26",
+    "shipping flickstat — 29,500+ page views",
+    "aws · docker · terraform · ci/cd",
+    "ml pipelines → production",
+    "graduating ’26",
+  ],
   stats: [
     { value: 2, suffix: "×", label: "AWS certified" },
-    { value: 5800, suffix: "+", label: "Flickstat visitors" },
+    { value: 7200, suffix: "+", label: "Flickstat visitors" },
     { value: 20, suffix: "+", label: "hackathons & meetups" },
     { literal: "’26", label: "graduating" },
   ],
@@ -149,7 +162,11 @@ export const DATA: PortfolioData = {
       media: { kind: "live", src: "https://flickstat.com", poster: "" },
       desc: "A free, analytics-native football platform — founded it and built the entire stack solo on a 3-person team: a Python data pipeline, a Supabase Postgres backend, and a Next.js frontend on Vercel, with a canonical entity-resolution layer unifying four providers and hybrid ISR/SSR serving 1,000+ pages.",
       tags: ["Next.js", "Supabase", "Python", "Vercel"],
-      metric: { value: "5,800+", label: "visitors" },
+      metric: { value: "7,200+", label: "visitors" },
+      secondaryMetric: { value: "29,500+", label: "page views" },
+      // Monthly unique visitors, Mar–Oct 2026 (Vercel Analytics, rounded to the
+      // nearest ~10; October is month-to-date). Sums to ~7.3k total visitors.
+      trend: { label: "monthly visitors · Apr–Oct ’26", points: [760, 370, 680, 1490, 1680, 990, 1320] },
       caseStudy: {
         challenge:
           "Football stats are everywhere — but four major providers each call the same player a different name with conflicting IDs. Building anything analytics-grade meant solving that mess first.",
@@ -163,7 +180,7 @@ export const DATA: PortfolioData = {
           "Deployed on Vercel with CI gates on schema drift",
         ],
         result:
-          "Live at flickstat.com — ~1,200 visitors in month one, 5,800+ and counting now, all organic with zero paid acquisition. Now the foundation for the next product layer.",
+          "Live at flickstat.com — 7,200+ visitors and 29,500+ page views since launch, growing month over month, all organic with zero paid acquisition. Now the foundation for the next product layer.",
       },
     },
     {

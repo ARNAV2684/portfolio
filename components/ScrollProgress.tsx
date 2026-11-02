@@ -39,11 +39,16 @@ export function ScrollProgress() {
   return (
     <div
       aria-hidden
-      className="pointer-events-none fixed inset-x-0 top-0 z-50 h-[2px] bg-transparent"
+      className="pointer-events-none fixed inset-x-0 top-0 z-[60] h-[3px] bg-transparent"
     >
+      {/* Full-width gradient revealed by clip-path, so the indigo→green colours
+          stay anchored to the page instead of stretching as the bar grows. */}
       <div
-        className="h-full bg-accent transition-[width] duration-75 ease-out"
-        style={{ width: `${progress}%` }}
+        className="h-full transition-[clip-path] duration-75 ease-out"
+        style={{
+          background: "linear-gradient(90deg, var(--accent), var(--green))",
+          clipPath: `inset(0 ${100 - progress}% 0 0)`,
+        }}
       />
     </div>
   );

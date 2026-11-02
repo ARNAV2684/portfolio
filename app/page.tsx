@@ -3,6 +3,8 @@ import { ScrollProgress } from "@/components/ScrollProgress";
 import { BackToTop } from "@/components/BackToTop";
 import { CommandPalette } from "@/components/CommandPalette";
 import { Hero } from "@/components/Hero";
+import { StatusTicker } from "@/components/StatusTicker";
+import { BootLoader } from "@/components/BootLoader";
 import { StatsBand } from "@/components/StatsBand";
 import { GitHubActivity } from "@/components/GitHubActivity";
 import { Work } from "@/components/Work";
@@ -24,10 +26,12 @@ export default function Page() {
       >
         Skip to content
       </a>
+      <BootLoader />
       <ScrollProgress />
       <Nav />
       <main id="main">
         <Hero />
+        <StatusTicker />
         <StatsBand />
         <WhyIBuild />
         <GitHubActivity />

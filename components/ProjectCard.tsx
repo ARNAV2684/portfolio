@@ -4,6 +4,7 @@ import { useEffect, useRef, useState } from "react";
 import type { Project } from "@/data/content";
 import { assetPath } from "@/lib/assetPath";
 import { usePrefersReducedMotion } from "@/lib/useReducedMotion";
+import { Sparkline } from "./Sparkline";
 
 // type badge colors (CLAUDE.md §7): LIVE→green, PRIVATE→accent, OPEN SOURCE→ink.
 const TYPE_STYLES: Record<Project["type"], string> = {
@@ -54,11 +55,24 @@ export function ProjectCard({ project }: { project: Project }) {
           <p className="mt-3 max-w-[52ch] leading-relaxed text-mut">{project.desc}</p>
 
           {project.metric && (
-            <div className="mt-4 inline-flex items-baseline gap-2 self-start rounded-lg border border-line bg-bg px-3 py-2">
-              <span className="font-display text-xl font-extrabold tabular-nums text-accent">
-                {project.metric.value}
-              </span>
-              <span className="font-mono-label text-mut">{project.metric.label}</span>
+            <div className="mt-4 flex flex-wrap items-end gap-x-6 gap-y-3">
+              {[project.metric, project.secondaryMetric].map(
+                (m) =>
+                  m && (
+                    <div
+                      key={m.label}
+                      className="inline-flex items-baseline gap-2 rounded-lg border border-line bg-bg px-3 py-2"
+                    >
+                      <span className="font-display text-xl font-extrabold tabular-nums text-accent">
+                        {m.value}
+                      </span>
+                      <span className="font-mono-label text-mut">{m.label}</span>
+                    </div>
+                  )
+              )}
+              {project.trend && (
+                <Sparkline points={project.trend.points} label={project.trend.label} />
+              )}
             </div>
           )}
 

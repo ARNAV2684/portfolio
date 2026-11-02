@@ -70,6 +70,15 @@ export const viewport: Viewport = {
 export default function RootLayout({ children }: { children: ReactNode }) {
   return (
     <html lang="en" suppressHydrationWarning className={GeistMono.variable}>
+      <head>
+        {/* Marks returning visitors before first paint so the boot screen never flashes. */}
+        <script
+          dangerouslySetInnerHTML={{
+            __html:
+              "try{if(sessionStorage.getItem('arnav-booted'))document.documentElement.dataset.booted='1'}catch(e){}",
+          }}
+        />
+      </head>
       <body>
         <PersonJsonLd />
         <Providers>{children}</Providers>
