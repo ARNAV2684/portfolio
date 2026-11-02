@@ -6,11 +6,11 @@ const KEY = "arnav-booted";
 const DURATION = 500;
 
 /**
- * First-visit loading bar: plain logo + progress bar, ~0.5s. Once per browser
- * session, skippable (click / any key), and CSS-driven as a fallback: if JS never
- * runs the overlay still fades out on its own (.boot in globals.css). Returning visitors
- * never see it — an inline script in layout.tsx sets `data-booted` on <html>
- * before first paint. Hidden under prefers-reduced-motion.
+ * First-visit loading bar: the wordmark over a square bar, about half a second.
+ * Once per browser session, skippable (click or any key), and CSS-driven as a
+ * fallback: if JS never runs the overlay still fades out on its own (.boot in
+ * globals.css). Returning visitors never see it: an inline script in layout.tsx
+ * sets `data-booted` on <html> before first paint. Hidden under reduced motion.
  */
 export function BootLoader() {
   const [pct, setPct] = useState(0);
@@ -21,7 +21,7 @@ export function BootLoader() {
       try {
         sessionStorage.setItem(KEY, "1");
       } catch {
-        /* storage blocked — overlay just shows once per load */
+        /* storage blocked: the overlay just shows once per load */
       }
       setGone(true);
     };
@@ -59,10 +59,10 @@ export function BootLoader() {
     <div className="boot" role="status" aria-label="Loading arnav.works">
       <div className="boot-inner">
         <div className="boot-logo">
-          arnav<span className="text-accent">.</span>
+          arnav gupta
         </div>
         <div className="boot-bar" aria-hidden>
-          <div style={{ width: `${pct}%` }} />
+          <div style={{ transform: `scaleX(${pct / 100})` }} />
         </div>
       </div>
     </div>
