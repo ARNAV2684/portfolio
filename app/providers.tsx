@@ -4,15 +4,15 @@ import { ThemeProvider } from "next-themes";
 import type { ReactNode } from "react";
 
 /**
- * Theme provider. Dark ("black") is the primary/default mode; visitors land in dark
- * and can switch to light, and the choice persists via next-themes. `attribute="class"`
- * toggles `.dark` on <html>, which swaps the token set defined in globals.css.
+ * Theme provider. Wayfind's platform colourway (light) is the default; visitors can
+ * switch to the night colourway and the choice persists via next-themes.
+ * `attribute="class"` toggles `.dark` on <html>, which swaps the tokens in app/tokens.css.
  */
 export function Providers({ children }: { children: ReactNode }) {
   return (
     <ThemeProvider
       attribute="class"
-      defaultTheme="dark"
+      defaultTheme="light"
       enableSystem={false}
       disableTransitionOnChange={false}
     >

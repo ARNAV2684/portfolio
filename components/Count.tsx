@@ -66,7 +66,10 @@ export function Count({
   return (
     <span ref={ref} className={className}>
       {prefix}
-      {value.toFixed(decimals)}
+      {value.toLocaleString("en-US", {
+        minimumFractionDigits: decimals,
+        maximumFractionDigits: decimals,
+      })}
       {suffix}
     </span>
   );

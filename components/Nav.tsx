@@ -12,26 +12,25 @@ const LINKS = [
   { href: "#contact", label: "contact" },
 ];
 
-const blurStyle = {
-  backgroundColor: "color-mix(in srgb, var(--bg) 72%, transparent)",
-  backdropFilter: "saturate(180%) blur(12px)",
-  WebkitBackdropFilter: "saturate(180%) blur(12px)",
-} as const;
-
-/** Sticky, blurred translucent nav (CLAUDE.md §5). Collapses to a menu on mobile. */
+/** Floating pill nav: wordmark, the sections, ⌘K, the contact action and the
+ *  theme toggle. Under 68rem the links fold into a menu below the pill. */
 export function Nav() {
   const [open, setOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
   const [active, setActive] = useState("");
 
   useEffect(() => {
-    const onScroll = () => setScrolled(window.scrollY > 8);
+    const onScroll = () => {
+      setScrolled(window.scrollY > 8);
+      // Back on the hero, no section is current.
+      if (window.scrollY < window.innerHeight * 0.5) setActive("");
+    };
     onScroll();
     window.addEventListener("scroll", onScroll, { passive: true });
     return () => window.removeEventListener("scroll", onScroll);
   }, []);
 
-  // Scroll-spy: highlight the nav link for the section currently in view.
+  // Scroll-spy: mark the nav link for the section currently in view.
   useEffect(() => {
     const sections = LINKS.map((l) => document.getElementById(l.href.slice(1))).filter(
       (el): el is HTMLElement => el !== null
@@ -51,107 +50,72 @@ export function Nav() {
   }, []);
 
   return (
-    <header
-      className={`sticky top-0 z-40 border-b transition-colors ${
-        scrolled ? "border-line" : "border-transparent"
-      }`}
-      style={blurStyle}
-    >
-      <nav className="shell flex h-16 items-center justify-between">
-        <a
-          href="#main"
-          aria-label="Back to top"
-          className="font-display text-lg font-extrabold tracking-tight text-ink"
-        >
-          arnav<span className="text-accent">.</span>
-          <span
-            className={`inline-block overflow-hidden align-baseline transition-all duration-500 ease-out ${
-              scrolled ? "ml-1 max-w-[8ch] opacity-100" : "max-w-0 opacity-0"
-            }`}
-          >
-            gupta
-          </span>
-        </a>
-
-        {/* Desktop links */}
-        <div className="hidden items-center gap-4 md:flex lg:gap-6">
-          <ul className="flex items-center gap-4 lg:gap-6">
-            {LINKS.map((l) => {
-              const isActive = active === l.href.slice(1);
-              return (
-                <li key={l.href}>
-                  <a
-                    href={l.href}
-                    aria-current={isActive ? "true" : undefined}
-                    className={`font-mono-label transition-colors ${
-                      isActive ? "text-accent" : "text-mut hover:text-ink"
-                    }`}
-                  >
-                    {l.label}
-                  </a>
-                </li>
-              );
-            })}
-          </ul>
-          <button
-            type="button"
-            aria-label="Open command palette"
-            onClick={() => window.dispatchEvent(new CustomEvent("cmdk:open"))}
-            className="inline-flex items-center gap-1.5 rounded-full border border-line px-3 py-2 font-mono-label text-mut transition-colors hover:border-accent hover:text-accent"
-          >
-            <span aria-hidden>⌘</span>K
-          </button>
-          <a
-            href="#contact"
-            className="rounded-full bg-ink px-4 py-2 text-sm font-semibold text-bg transition-opacity hover:opacity-90"
-          >
-            Get in touch
+    <header className="nav-wrap">
+      <div className="container">
+        <nav className="nav" aria-label="Primary" data-scrolled={scrolled ? "true" : "false"}>
+          <a href="#main" aria-label="Back to top" className="nav__mark">
+            arnav gupta
           </a>
-          <ThemeToggle />
-        </div>
 
-        {/* Mobile controls */}
-        <div className="flex items-center gap-2 md:hidden">
-          <ThemeToggle />
-          <button
-            type="button"
-            aria-label={open ? "Close menu" : "Open menu"}
-            aria-expanded={open}
-            onClick={() => setOpen((o) => !o)}
-            className="grid h-10 w-10 place-items-center rounded-full border border-line text-ink transition-colors hover:border-accent"
-          >
-            <span aria-hidden>{open ? "✕" : "☰"}</span>
-          </button>
-        </div>
-      </nav>
-
-      {/* Mobile dropdown */}
-      {open && (
-        <div className="border-t border-line md:hidden" style={blurStyle}>
-          <ul className="shell flex flex-col py-3">
+          <ul className="nav__links">
             {LINKS.map((l) => (
               <li key={l.href}>
                 <a
                   href={l.href}
-                  onClick={() => setOpen(false)}
-                  className="block py-2.5 font-mono-label text-mut transition-colors hover:text-ink"
+                  aria-current={active === l.href.slice(1) ? "true" : undefined}
+                  className="nav__link"
                 >
                   {l.label}
                 </a>
               </li>
             ))}
-            <li className="pt-2">
-              <a
-                href="#contact"
-                onClick={() => setOpen(false)}
-                className="block rounded-full bg-ink px-4 py-2.5 text-center text-sm font-semibold text-bg transition-opacity hover:opacity-90"
-              >
-                Get in touch
-              </a>
-            </li>
           </ul>
-        </div>
-      )}
+
+          <div className="nav__tools">
+            <button
+              type="button"
+              aria-label="Open command palette"
+              onClick={() => window.dispatchEvent(new CustomEvent("cmdk:open"))}
+              className="nav__cmd"
+            >
+              ⌘&nbsp;K
+            </button>
+            <a href="#contact" className="btn btn--sm nav__cta">
+              Get in touch
+            </a>
+            <ThemeToggle />
+            <button
+              type="button"
+              aria-label={open ? "Close menu" : "Open menu"}
+              aria-expanded={open}
+              aria-controls="nav-drawer"
+              onClick={() => setOpen((o) => !o)}
+              className="icon-btn nav__menu"
+            >
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="square" aria-hidden="true">
+                {open ? <path d="M6 6l12 12M18 6L6 18" /> : <path d="M4 7h16M4 12h16M4 17h16" />}
+              </svg>
+            </button>
+          </div>
+        </nav>
+
+        {open && (
+          <div className="nav__drawer" id="nav-drawer">
+            <ul>
+              {LINKS.map((l) => (
+                <li key={l.href}>
+                  <a href={l.href} onClick={() => setOpen(false)}>
+                    {l.label}
+                  </a>
+                </li>
+              ))}
+            </ul>
+            <a href="#contact" onClick={() => setOpen(false)} className="btn btn--sm">
+              Get in touch
+            </a>
+          </div>
+        )}
+      </div>
     </header>
   );
 }

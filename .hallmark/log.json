@@ -1,0 +1,34 @@
+[
+ {
+  "mode": "redesign",
+  "depth": "full",
+  "scope": "page",
+  "shape": "Marquee Hero",
+  "theme": "wayfind",
+  "axes": "light/mono/cool",
+  "hero": "Ledge",
+  "nav": "floating pill",
+  "footer": "statement",
+  "imagery": "portrait 1, product: live flickstat frame, SAM clip, DataPro capture",
+  "photos": [],
+  "entry": "why-i-build split",
+  "fingerprint": "ledge/plate|split|band-rows|index-board+case|switcher-plate|band-ledgers|showcase-diagram+rows|form",
+  "sections": [
+   "hero",
+   "split",
+   "band rows",
+   "index board",
+   "switcher",
+   "band ledgers",
+   "showcase",
+   "form",
+   "footer statement"
+  ],
+  "signature": "the work as a departures board, Flickstat live on a sign plate",
+  "waived": [
+   "8"
+  ],
+  "prompt": "portfolio of an AI and MLOps engineer; recruiters hiring him",
+  "date": "2026-11-02"
+ }
+]

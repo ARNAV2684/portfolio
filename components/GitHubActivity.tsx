@@ -26,7 +26,7 @@ interface RawEvent {
   payload?: { commits?: RawCommit[] };
 }
 
-/** Relative time string — "2h ago", "yesterday", "3 days ago". */
+/** Relative time string: "2h ago", "yesterday", "3d ago". */
 function relativeTime(d: Date): string {
   const diff = Date.now() - d.getTime();
   const mins = Math.floor(diff / 60_000);
@@ -41,9 +41,9 @@ function relativeTime(d: Date): string {
 }
 
 /**
- * Live GitHub activity band — fetches the user's public push events and shows
- * the most recent commits with repo + message + relative time. Falls back
- * silently if the API is unreachable or rate-limited (no error state on the page).
+ * Recent commits as status rows on a change of paper: the user's public push
+ * events, newest first. Renders nothing if the API is unreachable or
+ * rate-limited, so the page never shows an error band.
  */
 export function GitHubActivity() {
   const [events, setEvents] = useState<PushEvent[]>([]);
@@ -78,47 +78,29 @@ export function GitHubActivity() {
     return () => ctrl.abort();
   }, []);
 
-  // Don't render anything until we know whether to show; avoids layout shift on
-  // first paint when the API is fast (and a hard "loading" pulse when it isn't).
   if (!loaded) return null;
   if (events.length === 0) return null;
 
   return (
-    <section
-      aria-label="Recent GitHub activity"
-      className="shell border-y border-line bg-card py-5"
-    >
-      <div className="flex flex-col gap-3 md:flex-row md:items-center md:gap-6">
-        <div className="flex items-center gap-2 font-mono-label text-mut">
-          <span className="status-dot" aria-hidden />
-          <span>recent commits</span>
-          <a
-            href={`https://github.com/${GH_USER}`}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="text-accent transition-opacity hover:opacity-70"
-          >
-            @{GH_USER} ↗
+    <section aria-label="Recent GitHub activity" className="section--band">
+      <div className="container grid12 commits">
+        <div className="commits__head">
+          <h2>Recent commits</h2>
+          <a href={`https://github.com/${GH_USER}`} target="_blank" rel="noopener noreferrer" className="textlink">
+            @{GH_USER} on GitHub
           </a>
         </div>
-        <ul className="flex flex-1 flex-wrap gap-x-5 gap-y-2 overflow-hidden">
+        <ol className="commits__list">
           {events.map((e) => (
-            <li key={e.id} className="flex min-w-0 items-baseline gap-2">
-              <a
-                href={e.url}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="font-mono-label text-ink transition-colors hover:text-accent"
-                title={`${e.repo}: ${e.message}`}
-              >
-                <span className="text-accent">{e.repo.split("/")[1]}</span>
-                <span className="text-mut"> · </span>
-                <span className="truncate">{e.message}</span>
+            <li key={e.id}>
+              <a href={e.url} target="_blank" rel="noopener noreferrer" className="commit" title={`${e.repo}: ${e.message}`}>
+                <span className="commit__repo">{e.repo.split("/")[1]}</span>
+                <span className="commit__msg">{e.message}</span>
+                <small>{relativeTime(e.when)}</small>
               </a>
-              <span className="shrink-0 font-mono-label text-mut">{relativeTime(e.when)}</span>
             </li>
           ))}
-        </ul>
+        </ol>
       </div>
     </section>
   );

@@ -10,7 +10,7 @@ interface Command {
   label: string;
   hint?: string;
   run: () => void | Promise<void>;
-  /** Keep the palette open briefly after running (e.g. to show "copied ✓"). */
+  /** Keep the palette open briefly after running (e.g. to show "Copied"). */
   keepOpen?: boolean;
 }
 
@@ -24,7 +24,7 @@ const SECTIONS = [
 ];
 
 /**
- * ⌘K command palette — jump to sections, open links, copy the email, toggle
+ * ⌘K command palette: jump to sections, open links, copy the email, toggle
  * the theme. Opens via Cmd/Ctrl+K or a `cmdk:open` window event (the nav pill
  * dispatches it). Plain listbox semantics, arrow-key navigation, Esc closes.
  */
@@ -56,7 +56,7 @@ export function CommandPalette() {
       {
         group: "Links",
         label: "GitHub profile",
-        hint: "↗",
+        hint: "new tab",
         run: () => {
           window.open(DATA.links.github, "_blank", "noopener");
         },
@@ -64,7 +64,7 @@ export function CommandPalette() {
       {
         group: "Links",
         label: "LinkedIn",
-        hint: "↗",
+        hint: "new tab",
         run: () => {
           window.open(DATA.links.linkedin, "_blank", "noopener");
         },
@@ -87,7 +87,7 @@ export function CommandPalette() {
       },
       {
         group: "Actions",
-        label: copied ? "Copied ✓" : "Copy email address",
+        label: copied ? "Copied" : "Copy email address",
         hint: "clipboard",
         keepOpen: true,
         run: async () => {
@@ -99,7 +99,7 @@ export function CommandPalette() {
       {
         group: "Actions",
         label: `Switch to ${resolvedTheme === "dark" ? "light" : "dark"} theme`,
-        hint: "◐",
+        hint: "theme",
         run: () => setTheme(resolvedTheme === "dark" ? "light" : "dark"),
       },
     ],
@@ -176,39 +176,30 @@ export function CommandPalette() {
   let lastGroup = "";
 
   return (
-    <div
-      className="fixed inset-0 z-50 bg-black/45 backdrop-blur-sm"
-      onClick={close}
-      role="presentation"
-    >
+    <div className="palette-scrim" onClick={close} role="presentation">
       <div
         role="dialog"
         aria-modal="true"
         aria-label="Command palette"
         onClick={(e) => e.stopPropagation()}
         onKeyDown={onKeyDown}
-        className="mx-auto mt-[16vh] w-[min(560px,calc(100vw-2rem))] overflow-hidden rounded-card border border-line bg-card shadow-[var(--shadow-hover)]"
+        className="palette"
       >
-        <div className="flex items-center gap-3 border-b border-line px-4">
-          <span className="font-mono-label text-accent">&gt;</span>
+        <div className="palette__search">
+          <span aria-hidden="true">&gt;</span>
           <input
             ref={inputRef}
             value={query}
             onChange={(e) => setQuery(e.target.value)}
             placeholder="Jump to a section, open a link…"
             aria-label="Search commands"
-            className="h-12 w-full bg-transparent text-sm text-ink outline-none placeholder:text-mut"
           />
-          <kbd className="rounded border border-line px-1.5 py-0.5 font-mono-label text-mut">
-            esc
-          </kbd>
+          <kbd>esc</kbd>
         </div>
 
-        <ul role="listbox" aria-label="Commands" className="max-h-[46vh] overflow-y-auto p-2">
+        <ul role="listbox" aria-label="Commands" className="palette__list">
           {filtered.length === 0 && (
-            <li className="px-3 py-6 text-center font-mono-label text-mut">
-              no matches — try “work” or “github”
-            </li>
+            <li className="palette__empty">No matches. Try “work” or “github”.</li>
           )}
           {filtered.map((cmd, i) => {
             const showGroup = cmd.group !== lastGroup;
@@ -216,9 +207,7 @@ export function CommandPalette() {
             return (
               <li key={`${cmd.group}-${cmd.label}`} role="presentation">
                 {showGroup && (
-                  <div className="px-3 pb-1 pt-3 font-mono-label text-mut">
-                    // {cmd.group.toLowerCase()}
-                  </div>
+                  <div className="palette__group">{cmd.group}</div>
                 )}
                 <button
                   type="button"
@@ -226,26 +215,20 @@ export function CommandPalette() {
                   aria-selected={i === index}
                   onMouseEnter={() => setIndex(i)}
                   onClick={() => runCommand(cmd)}
-                  className={`flex w-full items-center justify-between gap-3 rounded-lg px-3 py-2.5 text-left text-sm transition-colors ${
-                    i === index
-                      ? "bg-[var(--accent-soft)] text-accent"
-                      : "text-ink hover:bg-[var(--accent-soft)]"
-                  }`}
+                  className="palette__item"
                 >
                   <span>{cmd.label}</span>
-                  {cmd.hint && (
-                    <span className="shrink-0 font-mono-label text-mut">{cmd.hint}</span>
-                  )}
+                  {cmd.hint && <small>{cmd.hint}</small>}
                 </button>
               </li>
             );
           })}
         </ul>
 
-        <div className="flex items-center gap-4 border-t border-line px-4 py-2 font-mono-label text-mut">
-          <span>↑↓ navigate</span>
-          <span>↵ select</span>
-          <span className="ml-auto">⌘K to toggle</span>
+        <div className="palette__foot">
+          <span>Arrow keys to move</span>
+          <span>Enter to run</span>
+          <span>⌘&nbsp;K to close</span>
         </div>
       </div>
     </div>
