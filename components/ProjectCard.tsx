@@ -13,17 +13,26 @@ const TYPE_STYLES: Record<Project["type"], string> = {
 };
 
 /**
- * Video-forward project card (CLAUDE.md §7): media panel (left ~300px) + info (right).
+ * Video-forward project card (CLAUDE.md §7): media panel + info. Live previews and
+ * screenshots keep the narrow ~300px panel; demo videos get the wider column at their
+ * true 16:9 shape (stacked above the info under lg) so the whole frame shows, uncropped.
  * The taxonomy is the point — LIVE → live link, OPEN SOURCE → repo, PRIVATE → the clip
  * is the proof (rendered as a caption, no link).
  */
 export function ProjectCard({ project }: { project: Project }) {
   const [open, setOpen] = useState(false);
   const panelId = `case-${project.title.replace(/\s+/g, "-").toLowerCase()}`;
+  const isVideo = project.media.kind === "video";
 
   return (
     <article className="card-hover overflow-hidden rounded-card border border-line bg-card">
-      <div className="grid md:grid-cols-[300px_1fr]">
+      <div
+        className={
+          isVideo
+            ? "grid lg:grid-cols-[minmax(0,1.25fr)_minmax(0,1fr)]"
+            : "grid md:grid-cols-[300px_1fr]"
+        }
+      >
         <Media project={project} />
         <div className="relative z-[1] flex flex-col p-6">
           <div className="flex items-start justify-between gap-3">
@@ -267,22 +276,26 @@ function VideoMedia({
     return () => io.disconnect();
   }, [reduced]);
 
+  // The frame keeps the clip's own 16:9 shape and `object-contain`, so nothing is
+  // cropped; the label sits under the video instead of over it.
   return (
-    <div className="media-fallback relative z-[1] min-h-[200px] overflow-hidden md:min-h-full">
-      <video
-        ref={ref}
-        className="absolute inset-0 h-full w-full object-cover"
-        muted
-        loop
-        playsInline
-        preload="none"
-        poster={poster || undefined}
-        aria-label={`${project.title} demo clip`}
-      >
-        <source src={src} type="video/mp4" />
-      </video>
-      <span className="absolute bottom-3 left-3 inline-flex items-center gap-2 rounded-full bg-black/40 px-2.5 py-1 font-mono-label text-white/90 backdrop-blur">
-        {reduced ? "▶ demo (reduced motion)" : "▶ auto-playing"}
+    <div className="media-fallback relative z-[1] flex flex-col">
+      <div className="relative aspect-video w-full overflow-hidden bg-black">
+        <video
+          ref={ref}
+          className="absolute inset-0 h-full w-full object-contain"
+          muted
+          loop
+          playsInline
+          preload="none"
+          poster={poster || undefined}
+          aria-label={`${project.title} demo clip`}
+        >
+          <source src={src} type="video/mp4" />
+        </video>
+      </div>
+      <span className="px-4 py-3 font-mono-label text-white/80">
+        {reduced ? "▶ demo (reduced motion)" : "▶ auto-playing, muted"}
       </span>
     </div>
   );
