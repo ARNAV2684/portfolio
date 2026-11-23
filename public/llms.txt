@@ -10,6 +10,7 @@ LinkedIn: https://www.linkedin.com/in/arnav-gupta-2b8b202b2/
 ## Sections
 
 - Selected work (/#work): Flickstat (founder, full-stack analytics platform),
+  Overlap (team hackathon, seven-agent live football companion on Azure),
   SAM Auto-Annotation (GarudaUAV, computer vision), End-to-End ML Data Pipeline
   (open source)
 - Experience (/#experience): GarudaUAV (AI/CV engineering), Startup School
