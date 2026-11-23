@@ -167,6 +167,32 @@ export const DATA: PortfolioData = {
       },
     },
     {
+      title: "Overlap",
+      kind: "Team hackathon · Multi-Agent AI",
+      type: "OPEN SOURCE",
+      action: "View on GitHub ↗",
+      href: "https://github.com/ARNAV2684/Overlap",
+      media: { kind: "video", src: "/clips/overlap-demo.mp4", poster: "/clips/overlap-poster.jpg" },
+      desc: "A live football match companion on Azure: seven agents on Microsoft Foundry explain each big moment as it happens, check every number in code before it reaches the screen, and rewrite it for each viewer (casual fan, analyst, club supporter) in English, Spanish, Hindi or French.",
+      tags: ["Microsoft Foundry", "Agent Framework", "MCP", "Azure", "Next.js"],
+      metric: { value: "0", label: "wrong numbers in 12,236 lines" },
+      caseStudy: {
+        challenge:
+          "Live football commentary from a language model is fast but loose with numbers. Overlap had to explain every big moment within seconds, to very different audiences, without ever putting a wrong figure on screen.",
+        role:
+          "Repo owner and lead contributor on a 4-person team (363 of 622 commits): the agent workflow, the web app, Azure monitoring, the match generator and the evaluation write-ups.",
+        process: [
+          "A synthetic match engine streams every event and every player position, 5 times a second, into Azure Event Hubs",
+          "A stats engine turns the stream into xG, pressing, momentum and sprint numbers, and flags the moments worth explaining",
+          "Seven agents per moment (spotter, analyst, narrator, fact-checker, translator, director, recap writer) read context through our own MCP server and hand off through one job record in Cosmos DB",
+          "The fact-checker verifies every number in code and every claim with a second model call; a failing line goes back for at most two rewrites, then falls back to a checked template",
+          "Web PubSub sends one card stream per audience to a Next.js screen with a 3D pitch drawn from the tracking data",
+        ],
+        result:
+          "0 wrong numbers in 12,236 published lines across a 24-match bench. On the same 17 moments, a single narrator agent published 65 lines no check could tie to the evidence; the seven agents published none.",
+      },
+    },
+    {
       title: "SAM Auto-Annotation",
       kind: "GarudaUAV · Computer Vision",
       type: "PRIVATE",
