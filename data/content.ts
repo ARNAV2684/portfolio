@@ -142,14 +142,14 @@ export const DATA: PortfolioData = {
   },
   ticker: [
     "open to opportunities ’26",
-    "shipping flickstat, 29,500+ page views",
+    "shipping flickstat, 36,900+ page views",
     "aws · docker · terraform · ci/cd",
     "ml pipelines → production",
     "graduating ’26",
   ],
   stats: [
     { value: 2, suffix: "×", label: "AWS certified" },
-    { value: 7200, suffix: "+", label: "Flickstat visitors" },
+    { value: 13200, suffix: "+", label: "Flickstat visitors" },
     { value: 20, suffix: "+", label: "hackathons & meetups" },
     { literal: "’26", label: "graduating" },
   ],
@@ -163,11 +163,11 @@ export const DATA: PortfolioData = {
       media: { kind: "live", src: "https://flickstat.com", poster: "" },
       desc: "A free, analytics-native football platform: founded it and built the entire stack solo on a 3-person team: a Python data pipeline, a Supabase Postgres backend, and a Next.js frontend on Vercel, with a canonical entity-resolution layer unifying four providers and hybrid ISR/SSR serving 1,000+ pages.",
       tags: ["Next.js", "Supabase", "Python", "Vercel"],
-      metric: { value: "7,200+", label: "visitors" },
-      secondaryMetric: { value: "29,500+", label: "page views" },
-      // Monthly unique visitors, Mar–Oct 2026 (Vercel Analytics, rounded to the
-      // nearest ~10; October is month-to-date). Sums to ~7.3k total visitors.
-      trend: { label: "Monthly visitors, Apr to Oct ’26", points: [760, 370, 680, 1490, 1680, 990, 1320] },
+      metric: { value: "13,200+", label: "visitors" },
+      secondaryMetric: { value: "36,900+", label: "page views" },
+      // Monthly visitors, the complete months Apr to Oct 2026 (Vercel Web Analytics,
+      // per the FlickStat report through PR #245). November is partial and left out.
+      trend: { label: "Monthly visitors, Apr to Oct ’26", points: [765, 362, 705, 1475, 1677, 988, 1777] },
       caseStudy: {
         challenge:
           "Football stats are everywhere, but four major providers each call the same player a different name with conflicting IDs. Building anything analytics-grade meant solving that mess first.",
@@ -181,7 +181,7 @@ export const DATA: PortfolioData = {
           "Deployed on Vercel with CI gates on schema drift",
         ],
         result:
-          "Live at flickstat.com: 7,200+ visitors and 29,500+ page views since launch, growing month over month, all organic with zero paid acquisition. Now the foundation for the next product layer.",
+          "Live at flickstat.com: 13,200+ visitors and 36,900+ page views across 121 countries since April 2026, with zero paid acquisition. Now the foundation for the next product layer.",
       },
     },
     {

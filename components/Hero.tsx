@@ -42,7 +42,7 @@ export function Hero() {
               )}
             </div>
             <p className="sign__foot">
-              <small>Source: Vercel Analytics, Oct 2026</small>
+              <small>Source: Vercel Analytics, Apr to Nov 15, 2026</small>
             </p>
           </aside>
         )}
