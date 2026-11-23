@@ -198,7 +198,7 @@ export const DATA: PortfolioData = {
       type: "PRIVATE",
       action: "▶ demo clip",
       href: "",
-      media: { kind: "video", src: "/clips/sam-demo.mp4", poster: "" },
+      media: { kind: "video", src: "/clips/auto-annotation-demo.mp4", poster: "/clips/auto-annotation-poster.jpg" },
       desc: "One-click image labeling on Meta's Segment Anything Model with multi-format export (YOLO / COCO / Pascal VOC), batch processing, and a Gradio UI — cutting manual annotation effort by up to 50%.",
       tags: ["SAM", "Gradio", "Python"],
       metric: { value: "↓50%", label: "labeling effort" },

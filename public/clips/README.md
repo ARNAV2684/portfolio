@@ -2,7 +2,8 @@
 
 Drop the PRIVATE project demo recordings here (referenced from `data/content.ts`):
 
-- `sam-demo.mp4` + `sam-poster.jpg` — SAM Auto-Annotation
+- `auto-annotation-demo.mp4` + `auto-annotation-poster.jpg` — SAM Auto-Annotation
+- `overlap-demo.mp4` + `overlap-poster.jpg` — Overlap
 - `pipeline-demo.mp4` + `pipeline-poster.jpg` — ML Pipeline Platform
 
 **Guidance (CLAUDE.md §7):** record ~10–15s, 16:9 or square, **muted**, compressed
